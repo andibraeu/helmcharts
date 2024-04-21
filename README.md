@@ -1,3 +1,5 @@
+[![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/andibraeu)](https://artifacthub.io/packages/search?repo=andibraeu) [![Latest Release](https://img.shields.io/github/v/release/andibraeu/helmcharts)]()  
+
 # openhabcloud-helmchart
 
 ## How to use:
