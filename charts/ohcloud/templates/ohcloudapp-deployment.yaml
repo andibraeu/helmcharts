@@ -63,7 +63,7 @@ spec:
           configMap:
             # Provide the name of the ConfigMap containing the files you want
             # to add to the container
-          name: {{ include "ohcloud.fullname" . }}-config-json-template
+            name: {{ include "ohcloud.fullname" . }}-config-json-template
       {{- with .Values.openhabcloudApp.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
