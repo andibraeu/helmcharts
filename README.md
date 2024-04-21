@@ -1,1 +1,0 @@
-# openhabcloud-helmchart
