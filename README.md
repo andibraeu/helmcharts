@@ -2,7 +2,7 @@
 
 ## How to use:
 
-1. Install with `helm install andibraeu https://andibraeu.github.io/openhabcloud-helmchart/`
+1. Install with `helm install andibraeu https://andibraeu.github.io/helmcharts/`
 2. Use the `ohcloud` chart
 
 ## Configuration
