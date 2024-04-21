@@ -34,8 +34,10 @@ spec:
             {{- toYaml .Values.openhabcloudApp.securityContext | nindent 12 }}
           image: "{{ .Values.openhabcloudApp.image.repository }}:{{ .Values.openhabcloudApp.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.openhabcloudApp.image.pullPolicy }}
-          {{- with .Values.openhabcloudApp.env }}
           env:
+            - name: "PORT"
+              value: {{ .Values.openhabcloudApp.service.port }}
+          {{- with .Values.openhabcloudApp.env }}
             {{- toYaml . | nindent 12 }}
           {{- end }}
           ports:
