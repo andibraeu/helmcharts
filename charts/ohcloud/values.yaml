@@ -50,6 +50,8 @@ openhabcloudApp:
       value: ""
     - name: "MONGODB_PASS"
       value: ""
+    - name: "REDIS_HOST"
+      value: ""
     - name: "REDIS_PASSWORD"
       value: ""
     - name: "MAIL_USER"
