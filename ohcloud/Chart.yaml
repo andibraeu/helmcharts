@@ -1,0 +1,16 @@
+apiVersion: v2
+name: openhab-cloud
+description: A Helm chart for OpenHAB Cloud
+type: application
+dependencies:
+    - name: redis
+      version: 18.6.1
+      repository: oci://registry-1.docker.io/bitnamicharts
+      condition: redis.enabled    
+    - name: mongodb
+      version: 15.1.x
+      repository: oci://registry-1.docker.io/bitnamicharts
+      condition: mongodb.enabled
+      
+version: 1.0.0
+appVersion: "1.0.18"
