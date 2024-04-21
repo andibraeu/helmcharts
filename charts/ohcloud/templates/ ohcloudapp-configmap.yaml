@@ -35,7 +35,9 @@ data:
     },
     "mongodb": {
         "hosts": ["${MONGODB_URI}"],
-        "db": "${MONGODB_DB}"
+        "db": "${MONGODB_DB}",
+        "user": "${MONGODB_USER}",
+        "password": "${MONGODB_PASS}"
     },
     "redis": {
         "host": "redis",
