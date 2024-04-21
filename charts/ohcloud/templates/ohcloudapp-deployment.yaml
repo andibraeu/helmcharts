@@ -36,7 +36,7 @@ spec:
           imagePullPolicy: {{ .Values.openhabcloudApp.image.pullPolicy }}
           env:
             - name: "PORT"
-              value: {{ .Values.openhabcloudApp.service.port }}
+              value: "{{ .Values.openhabcloudApp.service.port }}"
           {{- with .Values.openhabcloudApp.env }}
             {{- toYaml . | nindent 12 }}
           {{- end }}
