@@ -15,7 +15,7 @@ data:
       "logger" : {
         "type": "console"
       },
-      "subDomainCookies": false
+      "subDomainCookies": {{ .Values.openhabcloudApp.features.subdomainCookies }}
     },
     "express":{
       "key" : "${EXPRESS_KEY}"
@@ -46,7 +46,7 @@ data:
         "password": "${REDIS_PASSWORD}"
     },
     "mailer": {
-        "host" : "smtp",
+        "host" : "${MAIL_HOST}",
         "port": 465,
         "secureConnection": true,
         "user": "${MAIL_USER}",
