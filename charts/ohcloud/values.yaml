@@ -79,7 +79,8 @@ openhabcloudApp:
       #      - chart-example.local
 
     proxy:
-      enabled: false
+      enabled: true
+      domainName: ""
       className: ""
       annotations: {}
         # kubernetes.io/ingress.class: nginx

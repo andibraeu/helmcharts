@@ -9,6 +9,7 @@ data:
     {
     "system": {
       "host": "${DOMAIN_NAME}",
+      "proxyHost": "${PROXY_DOMAIN_NAME}",
       "port": "443",
       "protocol": "https",
       "logger" : {

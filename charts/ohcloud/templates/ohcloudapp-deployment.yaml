@@ -37,6 +37,8 @@ spec:
           env:
             - name: "PORT"
               value: "{{ .Values.openhabcloudApp.service.port }}"
+            - name: "PROXY_DOMAIN_NAME"
+              value: "{{ .Values.openhabcloudApp.ingress.proxy.domainName }}"
           {{- with .Values.openhabcloudApp.env }}
             {{- toYaml . | nindent 12 }}
           {{- end }}
