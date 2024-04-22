@@ -79,7 +79,7 @@ openhabcloudApp:
       #      - chart-example.local
 
     proxy:
-      enabled: true
+      enabled: false
       domainName: ""
       className: ""
       annotations: {}
