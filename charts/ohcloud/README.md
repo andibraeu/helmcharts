@@ -19,7 +19,11 @@ Update these values, use secrets for values not everyone should see:
       value: ""
     - name: "APN_PASSPHRASE"
       value: ""
-    - name: "GCM_PASSWORD"
+    - name: "ENABLE_HEALTH_ENDPOINT"
+      value: false
+    - name: "GCM_SENDER_ID"
+      value: ""
+    - name: "GCM_SERVICE_FILE"
       value: ""
     - name: "MONGODB_URI"
       value: ""
