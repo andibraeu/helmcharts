@@ -56,10 +56,10 @@ spec:
           {{- with .Values.openhabcloudApp.volumeMounts }}          
             {{- toYaml . | nindent 12 }}
           {{- end }}
-            - name: config-json-template
-              mountPath: "/opt/openhabcloud/config.json.template"
+            - name: config-json
+              mountPath: "/opt/openhabcloud/config.json"
               readOnly: true
-              subPath: "config.json.template"
+              subPath: "config.json"
       volumes:
       {{- with .Values.openhabcloudApp.volumes }}
         {{- toYaml . | nindent 8 }}
@@ -68,10 +68,10 @@ spec:
           configMap:
             # Provide the name of the ConfigMap containing the files you want
             # to add to the container
-            name: {{ include "ohcloud.fullname" . }}-config-json-template
+            name: {{ include "ohcloud.fullname" . }}-config-json
             items:
-            - key: config.json.template
-              path: config.json.template
+            - key: config.json
+              path: config.json
       {{- with .Values.openhabcloudApp.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

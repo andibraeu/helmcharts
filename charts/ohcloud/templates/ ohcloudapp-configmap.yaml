@@ -1,64 +1,66 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ include "ohcloud.fullname" . }}-config-json-template
+  name: {{ include "ohcloud.fullname" . }}-config-json
   labels:
     {{- include "ohcloud.labels" . | nindent 4 }}
 data:
-  config.json.template: |-
+  config.json: |-
     {
     "system": {
-      "host": "${DOMAIN_NAME}",
-      "proxyHost": "${PROXY_DOMAIN_NAME}",
+      "host": "{{ .Values.openhabcloudApp.features.domainName }}",
+      "proxyHost": "{{ .Values.openhabcloudApp.features.proxyDomainName }}",
       "port": "443",
       "protocol": "https",
       "logger" : {
         "type": "console"
       },
       "healthEndpoint": {
-        "enabled": ${ENABLE_HEALTH_ENDPOINT}
+        "enabled": {{ .Values.openhabcloudApp.features.enableHealthEndpoint }}
       },
       "subDomainCookies": {{ .Values.openhabcloudApp.features.subdomainCookies }}
     },
     "express":{
-      "key" : "${EXPRESS_KEY}"
+      "key" : "{{- include "getValueFromSecret" (dict "Namespace" .Release.Namespace "Name" "ohcloud-config" "Length" 10 "Key" "EXPRESS_KEY")  -}}"
     },
     "apn" : {
       "gateway": "gateway.push.apple.com",
       "cert": "certs/aps/aps_production_cert.pem",
       "key": "certs/aps/aps_production_key.pem",
-      "passphrase": "${APN_PASSPHRASE}"
+      "passphrase": "{{- include "getValueFromSecret" (dict "Namespace" .Release.Namespace "Name" "ohcloud-config" "Length" 10 "Key" "APN_PASSPHRASE")  -}}"
     },
+    {{- if .Values.openhabcloudApp.features.enableGcm -}}
     "gcm" : {
-      "senderId": "${GCM_SENDER_ID}",
-      "serviceFile" : "${GCM_SERVICE_FILE}"
+      "senderId": "{{- include "getValueFromSecret" (dict "Namespace" .Release.Namespace "Name" "ohcloud-config" "Length" 10 "Key" "GCM_SENDER_ID")  -}}",
+      "serviceFile" : "{{- include "getValueFromSecret" (dict "Namespace" .Release.Namespace "Name" "ohcloud-config" "Length" 10 "Key" "GCM_SERVICE_FILE")  -}}"
     },
+    {{- end }}
     "ifttt" : {
       "iftttChannelKey" : "key",
       "iftttTestToken" : "token"
     },
     "mongodb": {
-        "hosts": ["${MONGODB_URI}"],
-        "db": "${MONGODB_DB}",
-        "user": "${MONGODB_USER}",
-        "password": "${MONGODB_PASS}"
+        "hosts": ["{{ .Values.openhabcloudApp.features.mongodbUri }}"],
+        "db": "{{ .Values.openhabcloudApp.features.mongodbDb }}",
+        "user": "{{- include "getValueFromSecret" (dict "Namespace" .Release.Namespace "Name" "ohcloud-config" "Length" 10 "Key" "MONGODB_USER")  -}}",
+        "password": "{{- include "getValueFromSecret" (dict "Namespace" .Release.Namespace "Name" "ohcloud-config" "Length" 10 "Key" "MONGODB_PASS")  -}}"
     },
     "redis": {
-        "host": "${REDIS_HOST}",
+        "host": "{{ .Values.openhabcloudApp.features.redisHost }}",
         "port": "6379",
-        "password": "${REDIS_PASSWORD}"
+        "password": "{{- include "getValueFromSecret" (dict "Namespace" .Release.Namespace "Name" "ohcloud-config" "Length" 10 "Key" "REDIS_PASSWORD")  -}}"
     },
     "mailer": {
-        "host" : "${MAIL_HOST}",
+        "host" : "{{ .Values.openhabcloudApp.features.mailHost }}",
         "port": 465,
         "secureConnection": true,
-        "user": "${MAIL_USER}",
-        "password": "${MAIL_PASSWORD}",
-        "from": "${MAIL_FROM}"
+        "user": "{{- include "getValueFromSecret" (dict "Namespace" .Release.Namespace "Name" "ohcloud-config" "Length" 10 "Key" "MAIL_USER")  -}}",
+        "password": "{{- include "getValueFromSecret" (dict "Namespace" .Release.Namespace "Name" "ohcloud-config" "Length" 10 "Key" "MAIL_PASSWORD")  -}}",
+        "from": "{{ .Values.openhabcloudApp.features.mailFrom }}"
     },
     "legal": {
         "terms" : "",
         "policy": ""
     },
-    "registration_enabled": false
+    "registration_enabled": {{ .Values.openhabcloudApp.features.registrationEnabled }}
     }
