@@ -44,26 +44,6 @@ openhabcloudApp:
     redisHost: ""
     registrationEnabled: false
 
-  env:
-    - name: "EXPRESS_KEY"
-      value: ""
-    - name: "APN_PASSPHRASE"
-      value: ""  
-    - name: "GCM_SENDER_ID"
-      value: ""
-    - name: "GCM_SERVICE_FILE"
-      value: ""
-    - name: "MONGODB_USER"
-      value: ""
-    - name: "MONGODB_PASS"
-      value: ""
-    - name: "REDIS_PASSWORD"
-      value: ""
-    - name: "MAIL_USER"
-      value: ""
-    - name: "MAIL_PASSWORD"
-      value: ""
-
   ingress:
     web:
       enabled: false

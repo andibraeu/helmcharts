@@ -12,5 +12,5 @@ dependencies:
       repository: oci://registry-1.docker.io/bitnamicharts
       condition: mongodb.enabled
       
-version: 1.2.0
+version: 1.2.1
 appVersion: "a8138a3"

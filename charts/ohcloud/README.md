@@ -27,7 +27,6 @@ Configure those values for your instance:
 Create a secret for those values and install it before deployment:
 
 ```
-  env:
     - name: "EXPRESS_KEY"
       value: ""
     - name: "APN_PASSPHRASE"
