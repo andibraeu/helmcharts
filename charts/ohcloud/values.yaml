@@ -20,13 +20,13 @@ openhabcloudApp:
   podSecurityContext: {}
     # fsGroup: 2000
 
-  securityContext: {}
-    # capabilities:
-    #   drop:
-    #   - ALL
-    # readOnlyRootFilesystem: true
-    # runAsNonRoot: true
-    # runAsUser: 1000
+  securityContext:
+    capabilities:
+      drop:
+      - ALL
+    readOnlyRootFilesystem: true
+    runAsNonRoot: true
+    runAsUser: 1000
 
   service:
     enabled: true
@@ -43,7 +43,11 @@ openhabcloudApp:
       value: ""
     - name: "APN_PASSPHRASE"
       value: ""
-    - name: "GCM_PASSWORD"
+    - name: "ENABLE_HEALTH_ENDPOINT"
+      value: false
+    - name: "GCM_SENDER_ID"
+      value: ""
+    - name: "GCM_SERVICE_FILE"
       value: ""
     - name: "MONGODB_URI"
       value: ""
@@ -112,11 +116,11 @@ openhabcloudApp:
 
   livenessProbe:
     httpGet:
-      path: /
+      path: /health
       port: http
   readinessProbe:
     httpGet:
-      path: /
+      path: /health
       port: http
 
   # Additional volumes on the output Deployment definition.

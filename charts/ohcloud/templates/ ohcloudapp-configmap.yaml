@@ -15,6 +15,9 @@ data:
       "logger" : {
         "type": "console"
       },
+      "healthEndpoint": {
+        "enabled": ${ENABLE_HEALTH_ENDPOINT}
+      },
       "subDomainCookies": {{ .Values.openhabcloudApp.features.subdomainCookies }}
     },
     "express":{
@@ -27,8 +30,8 @@ data:
       "passphrase": "${APN_PASSPHRASE}"
     },
     "gcm" : {
-      "jid": "something@gcm.googleapis.com",
-      "password": "${GCM_PASSWORD}"
+      "senderId": "${GCM_SENDER_ID}",
+      "serviceFile" : "${GCM_SERVICE_FILE}"
     },
     "ifttt" : {
       "iftttChannelKey" : "key",
