@@ -1,0 +1,73 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}
+    spec:
+      hostNetwork: {{ .Values.hostNetwork }}
+      containers:
+        - name: music-assistant
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: 8095
+            - containerPort: 8097
+          volumeMounts:
+            - name: data-storage
+              mountPath: {{ .Values.persistence.mountPath }}
+      {{- if .Values.oauth2Proxy.enabled }}
+        - name: oauth2-proxy
+          image: "{{ .Values.oauth2Proxy.image.repository }}:{{ .Values.oauth2Proxy.image.tag }}"
+          imagePullPolicy: {{ .Values.oauth2Proxy.image.pullPolicy }}
+          args:
+            - --upstream=http://127.0.0.1:8095
+            - --http-address=0.0.0.0:4180
+            - --provider=oidc
+            - --provider-display-name={{ .Values.oauth2Proxy.config.providerDisplayName }}
+            - --skip-provider-button={{ .Values.oauth2Proxy.config.skipProviderButton }}
+            - --pass-authorization-header={{ .Values.oauth2Proxy.config.passAuthorizationHeader }}
+            - --set-authorization-header={{ .Values.oauth2Proxy.config.setAuthorizationHeader }}
+            - --oidc-issuer-url={{ .Values.oauth2Proxy.config.oidcIssuerURL }}
+            - --redirect-url={{ .Values.oauth2Proxy.config.redirectURL }}
+            - --session-store-type={{ .Values.oauth2Proxy.config.sessionStoreType }}
+            - --cookie-refresh={{ .Values.oauth2Proxy.config.cookieRefresh }}
+          {{- if .Values.oauth2Proxy.secretRef }}
+            - --client-id=$(OAUTH2_CLIENT_ID)
+            - --client-secret=$(OAUTH2_CLIENT_SECRET)
+            - --cookie-secret=$(OAUTH2_COOKIE_SECRET)
+          env:
+            - name: OAUTH2_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.oauth2Proxy.secretRef }}
+                  key: clientID
+            - name: OAUTH2_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.oauth2Proxy.secretRef }}
+                  key: clientSecret
+            - name: OAUTH2_COOKIE_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.oauth2Proxy.secretRef }}
+                  key: cookieSecret
+          {{- else }}
+            - --client-id={{ .Values.oauth2Proxy.config.clientID }}
+            - --client-secret={{ .Values.oauth2Proxy.config.clientSecret }}
+            - --cookie-secret={{ .Values.oauth2Proxy.config.cookieSecret }}
+          {{- end }}
+          ports:
+            - containerPort: 4180
+      {{- end }}
+      volumes:
+        - name: data-storage
+          persistentVolumeClaim:
+            claimName: {{ .Release.Name }}-pvc 
