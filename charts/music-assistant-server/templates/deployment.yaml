@@ -30,6 +30,7 @@ spec:
           args:
             - --upstream=http://127.0.0.1:8095
             - --http-address=0.0.0.0:4180
+            - --email-domain=*
             - --provider=oidc
             - --provider-display-name={{ .Values.oauth2Proxy.config.providerDisplayName }}
             - --skip-provider-button={{ .Values.oauth2Proxy.config.skipProviderButton }}
