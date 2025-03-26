@@ -48,17 +48,17 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.oauth2Proxy.secretRef }}
-                  key: clientID
+                  key: client-id
             - name: OAUTH2_CLIENT_SECRET
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.oauth2Proxy.secretRef }}
-                  key: clientSecret
+                  key: client-secret
             - name: OAUTH2_COOKIE_SECRET
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.oauth2Proxy.secretRef }}
-                  key: cookieSecret
+                  key: cookie-secret
           {{- else }}
             - --client-id={{ .Values.oauth2Proxy.config.clientID }}
             - --client-secret={{ .Values.oauth2Proxy.config.clientSecret }}

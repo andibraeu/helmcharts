@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   repository: ghcr.io/music-assistant/server
-  tag: latest
+  tag: 2.4.4
   pullPolicy: IfNotPresent
 
 service:
@@ -21,7 +21,7 @@ oauth2Proxy:
   enabled: false  # Set to true to enable OAuth2 Proxy
   image:
     repository: quay.io/oauth2-proxy/oauth2-proxy
-    tag: latest
+    tag: 7.8.2
     pullPolicy: IfNotPresent
   config:
     provider: oidc
