@@ -1,0 +1,50 @@
+name: Update Chart Version
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - 'charts/music-assistant-server/Chart.yaml'
+
+jobs:
+  bump-chart-version:
+    runs-on: ubuntu-latest
+    # Only run on PRs from Renovate bot
+    if: ${{ github.actor == 'renovate[bot]' }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          ref: ${{ github.head_ref }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Check if appVersion was changed
+        id: check-app-version
+        run: |
+          if git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | grep -q 'charts/music-assistant-server/Chart.yaml'; then
+            if git diff ${{ github.event.pull_request.base.sha }} ${{ github.sha }} -- charts/music-assistant-server/Chart.yaml | grep -q 'appVersion:'; then
+              echo "App version changed, will bump chart version"
+              echo "changed=true" >> $GITHUB_OUTPUT
+            else
+              echo "App version not changed, skipping chart version bump"
+              echo "changed=false" >> $GITHUB_OUTPUT
+            fi
+          else
+            echo "Chart.yaml not modified, skipping"
+            echo "changed=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Bump chart version
+        if: steps.check-app-version.outputs.changed == 'true'
+        run: |
+          .github/scripts/bump-chart-version.sh charts/music-assistant-server
+          
+      - name: Commit and push changes
+        if: steps.check-app-version.outputs.changed == 'true'
+        run: |
+          git config --global user.name 'GitHub Action'
+          git config --global user.email 'action@github.com'
+          git add charts/music-assistant-server/Chart.yaml
+          git commit -m "Bump chart version due to appVersion update"
+          git push 

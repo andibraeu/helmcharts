@@ -2,5 +2,27 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:recommended"
+  ],
+  "kubernetes": {
+    "fileMatch": ["charts/.+/Chart\\.yaml$"]
+  },
+  "regexManagers": [
+    {
+      "fileMatch": ["charts/.+/Chart\\.yaml$"],
+      "matchStrings": [
+        "appVersion:\\s*['\"]?(?<currentValue>[^'\"]+)['\"]?"
+      ],
+      "depNameTemplate": "music-assistant/server",
+      "datasourceTemplate": "github-releases",
+      "versioningTemplate": "semver"
+    }
+  ],
+  "packageRules": [
+    {
+      "matchPaths": ["charts/music-assistant-server/Chart.yaml"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "additionalBranchPrefix": "chart-bump-",
+      "bumpVersion": "patch"
+    }
   ]
 }

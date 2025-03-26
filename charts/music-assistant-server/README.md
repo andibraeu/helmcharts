@@ -25,7 +25,7 @@ deploymentStrategy:
 
 image:
   repository: ghcr.io/music-assistant/server
-  tag: latest
+  tag: ""  # Leave empty to use the Chart's appVersion as tag
   pullPolicy: IfNotPresent
 
 hostNetwork: false  # Set to true to enable network access at host level
@@ -134,4 +134,14 @@ When you set `hostNetwork: true`, the container will run directly on the host ne
 1. Direct access to ports from the host (8095 for Web UI, 8097 for device communication)
 2. Enhanced network capabilities for detecting devices in the local network
 
-Note, however, that this may have security implications and in multi-node clusters, the application will only be accessible on the specific node where the pod is running. 
+Note, however, that this may have security implications and in multi-node clusters, the application will only be accessible on the specific node where the pod is running.
+
+## Automated Updates
+
+This chart is configured to work with Renovate for automated updates. When a new version of Music Assistant is released:
+
+1. Renovate will automatically update the `appVersion` in `Chart.yaml`
+2. A GitHub Action will automatically increment the chart's `version` 
+3. The deployment will use the new appVersion as the default image tag when no specific tag is provided
+
+This ensures your chart always stays up-to-date with the latest Music Assistant releases. 
