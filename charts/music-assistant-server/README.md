@@ -4,6 +4,8 @@
 
 This Helm chart installs a Music Assistant Server in your Kubernetes cluster. Music Assistant is a powerful media server for integrating music streaming services and controlling devices in your home network.
 
+The server always runs as a single replica to maintain proper state management.
+
 ## Installation
 
 ```bash
@@ -15,7 +17,11 @@ helm install music-assistant ./charts/music-assistant-server
 ### Basic Configuration
 
 ```yaml
-replicaCount: 1
+deploymentStrategy:
+  type: RollingUpdate  # Can be "Recreate" or "RollingUpdate"
+  rollingUpdate:
+    maxSurge: 1
+    maxUnavailable: 0
 
 image:
   repository: ghcr.io/music-assistant/server
