@@ -3,6 +3,32 @@ entries:
   music-assistant-server:
   - apiVersion: v2
     appVersion: "2.4"
+    created: "2025-03-26T20:46:44.444394935Z"
+    description: Music Assistant is a free, opensource Media library manager that
+      connects to your streaming services and a wide range of connected speakers.
+    digest: 5799aba7d78dac874440c5d6c0bc335e8785fe49a13ca56beb17943181110c0b
+    home: https://github.com/andibraeu/helmcharts/tree/main/charts/music-assistant-server
+    icon: https://music-assistant.io/assets/transparent-logo.png
+    keywords:
+    - music-assistant
+    - music-assistant-server
+    - audio
+    - multiroom-audio
+    - home-automation
+    - smart-home
+    kubeVersion: '>=1.16.0-0'
+    maintainers:
+    - name: Andreas Bräu
+      url: https://blog.andi95.de
+    name: music-assistant-server
+    sources:
+    - https://github.com/music-assistant/server
+    type: application
+    urls:
+    - https://github.com/andibraeu/helmcharts/releases/download/music-assistant-server-1.1.1/music-assistant-server-1.1.1.tgz
+    version: 1.1.1
+  - apiVersion: v2
+    appVersion: "2.4"
     created: "2025-03-26T20:36:16.377978262Z"
     description: Music Assistant is a free, opensource Media library manager that
       connects to your streaming services and a wide range of connected speakers.
@@ -201,4 +227,4 @@ entries:
     urls:
     - https://github.com/andibraeu/helmcharts/releases/download/openhab-cloud-1.0.15/openhab-cloud-1.0.15.tgz
     version: 1.0.15
-generated: "2025-03-26T20:36:16.378002156Z"
+generated: "2025-03-26T20:46:44.444429199Z"
