@@ -2,7 +2,7 @@
 
 This project provides a cert-manager ACME Webhook for [INWX](https://inwx.de/) and a corresponding helm chart.
 
-The helm chart is listed at Artifact Hub in repository [smueller18](https://artifacthub.io/packages/search?page=1&repo=smueller18) at <https://artifacthub.io/packages/helm/smueller18/cert-manager-webhook-inwx>.
+The helm chart is listed at Artifact Hub in repository [andibraeu](https://artifacthub.io/packages/search?page=1&repo=andibraeu) at <https://artifacthub.io/packages/helm/andibraeu/cert-manager-webhook-inwx>.
 
 ## Requirements
 
@@ -40,9 +40,9 @@ Follow the [instructions](https://cert-manager.io/docs/installation/) using the 
 ### Webhook
 
 ```bash
-helm repo add smueller18 https://smueller18.gitlab.io/helm-charts
+helm repo add andibraeu https://andibraeu.github.io/helmcharts/
 helm repo update
-helm install --namespace cert-manager cert-manager-webhook-inwx smueller18/cert-manager-webhook-inwx
+helm install --namespace cert-manager cert-manager-webhook-inwx abdibraeu/cert-manager-webhook-inwx
 ```
 
 **Note**: The kubernetes resources used to install the Webhook should be deployed within the same namespace as the cert-manager.

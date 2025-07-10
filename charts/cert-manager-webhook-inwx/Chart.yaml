@@ -1,7 +1,7 @@
 apiVersion: v2
 description: A Helm chart cert-manager ACME Webhook for INWX
 name: cert-manager-webhook-inwx
-version: 0.6.0
+version: 0.6.1
 appVersion: 0.6.0
 maintainers:
   - name: Stephan Müller
