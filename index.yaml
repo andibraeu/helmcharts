@@ -3,6 +3,20 @@ entries:
   cert-manager-webhook-inwx:
   - apiVersion: v2
     appVersion: 0.6.0
+    created: "2025-07-13T11:11:31.525295043Z"
+    description: A Helm chart cert-manager ACME Webhook for INWX
+    digest: edc1786ef93e4b56bd94e2be5922fde1ca2974c48ba777d474b425a8962dab08
+    maintainers:
+    - name: Stephan Müller
+      url: https://gitlab.com/smueller18/cert-manager-webhook-inwx
+    - name: Andibraeu
+      url: https://github.com/andibraeu/cert-manager-webhook-inwx
+    name: cert-manager-webhook-inwx
+    urls:
+    - https://github.com/andibraeu/helmcharts/releases/download/cert-manager-webhook-inwx-0.6.2/cert-manager-webhook-inwx-0.6.2.tgz
+    version: 0.6.2
+  - apiVersion: v2
+    appVersion: 0.6.0
     created: "2025-07-10T14:51:20.418834335Z"
     description: A Helm chart cert-manager ACME Webhook for INWX
     digest: 51bb8a0b46de01bba5944145cd45f85e3bcf7fb23c561aa33440414d72441727
@@ -44,6 +58,32 @@ entries:
     - https://github.com/andibraeu/helmcharts/releases/download/cert-manager-webhook-inwx-0.5.0/cert-manager-webhook-inwx-0.5.0.tgz
     version: 0.5.0
   music-assistant-server:
+  - apiVersion: v2
+    appVersion: 2.5.5
+    created: "2025-07-13T11:11:31.625236044Z"
+    description: Music Assistant is a free, opensource Media library manager that
+      connects to your streaming services and a wide range of connected speakers.
+    digest: 8cabd6bbf4a19a3451f0b6f68b1e2fdec77a48b6d9e7c2f225cae000d0bc2c7c
+    home: https://github.com/andibraeu/helmcharts/tree/main/charts/music-assistant-server
+    icon: https://music-assistant.io/assets/transparent-logo.png
+    keywords:
+    - music-assistant
+    - music-assistant-server
+    - audio
+    - multiroom-audio
+    - home-automation
+    - smart-home
+    kubeVersion: '>=1.16.0-0'
+    maintainers:
+    - name: Andreas Bräu
+      url: https://blog.andi95.de
+    name: music-assistant-server
+    sources:
+    - https://github.com/music-assistant/server
+    type: application
+    urls:
+    - https://github.com/andibraeu/helmcharts/releases/download/music-assistant-server-1.1.3/music-assistant-server-1.1.3.tgz
+    version: 1.1.3
   - apiVersion: v2
     appVersion: 2.4.4
     created: "2025-03-26T21:01:09.547656717Z"
@@ -203,6 +243,25 @@ entries:
   openhab-cloud:
   - apiVersion: v2
     appVersion: a8138a3
+    created: "2025-07-13T11:11:31.775474185Z"
+    dependencies:
+    - condition: redis.enabled
+      name: redis
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 18.19.4
+    - condition: mongodb.enabled
+      name: mongodb
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 15.1.x
+    description: A Helm chart for OpenHAB Cloud
+    digest: 9d0fa63bd2f094e27c115658a2da6eddc356f702296e3e3a2e8a5c8465af96ac
+    name: openhab-cloud
+    type: application
+    urls:
+    - https://github.com/andibraeu/helmcharts/releases/download/openhab-cloud-1.2.2/openhab-cloud-1.2.2.tgz
+    version: 1.2.2
+  - apiVersion: v2
+    appVersion: a8138a3
     created: "2024-06-24T19:54:23.828607567Z"
     dependencies:
     - condition: redis.enabled
@@ -296,4 +355,4 @@ entries:
     urls:
     - https://github.com/andibraeu/helmcharts/releases/download/openhab-cloud-1.0.15/openhab-cloud-1.0.15.tgz
     version: 1.0.15
-generated: "2025-07-10T14:51:20.418867789Z"
+generated: "2025-07-13T11:11:31.775537184Z"
