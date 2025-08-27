@@ -4,7 +4,7 @@ description: A Helm chart for OpenHAB Cloud
 type: application
 dependencies:
     - name: redis
-      version: 18.19.4
+      version: 22.0.7
       repository: oci://registry-1.docker.io/bitnamicharts
       condition: redis.enabled    
     - name: mongodb
