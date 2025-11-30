@@ -3,6 +3,20 @@ entries:
   cert-manager-webhook-inwx:
   - apiVersion: v2
     appVersion: 0.7.2
+    created: "2025-11-30T22:24:22.875849787Z"
+    description: A Helm chart cert-manager ACME Webhook for INWX
+    digest: cbe44d98dd684a8e83a80392fb5d1aa273102dd3f9a1cc62320ff6ec2b27ce66
+    maintainers:
+    - name: Stephan Müller
+      url: https://gitlab.com/smueller18/cert-manager-webhook-inwx
+    - name: Andibraeu
+      url: https://github.com/andibraeu/cert-manager-webhook-inwx
+    name: cert-manager-webhook-inwx
+    urls:
+    - https://github.com/andibraeu/helmcharts/releases/download/cert-manager-webhook-inwx-0.7.3/cert-manager-webhook-inwx-0.7.3.tgz
+    version: 0.7.3
+  - apiVersion: v2
+    appVersion: 0.7.2
     created: "2025-11-30T22:20:34.136186839Z"
     description: A Helm chart cert-manager ACME Webhook for INWX
     digest: 46108e5a931f0eecd4cbda8885a72fe81416705d0a191dd1eb0884fb36e56fec
@@ -369,4 +383,4 @@ entries:
     urls:
     - https://github.com/andibraeu/helmcharts/releases/download/openhab-cloud-1.0.15/openhab-cloud-1.0.15.tgz
     version: 1.0.15
-generated: "2025-11-30T22:20:34.136268752Z"
+generated: "2025-11-30T22:24:22.875898779Z"
