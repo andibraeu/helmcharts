@@ -1,21 +1,21 @@
-{{- if .Values.oauth2Proxy.enabled }}
+{{- if .Values.ingress.enabled }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ .Release.Name }}
-  {{- with .Values.oauth2Proxy.ingress.annotations }}
+  {{- with .Values.ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-  {{- if .Values.oauth2Proxy.ingress.tls.enabled }}
+  {{- if .Values.ingress.tls.enabled }}
   tls:
     - hosts:
-        - {{ .Values.oauth2Proxy.ingress.hostname }}
-      secretName: {{ .Values.oauth2Proxy.ingress.tls.secretName }}
+        - {{ .Values.ingress.hostname }}
+      secretName: {{ .Values.ingress.tls.secretName }}
   {{- end }}
   rules:
-    - host: {{ .Values.oauth2Proxy.ingress.hostname }}
+    - host: {{ .Values.ingress.hostname }}
       http:
         paths:
           - path: /

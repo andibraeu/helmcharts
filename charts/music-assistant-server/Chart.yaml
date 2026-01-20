@@ -1,6 +1,6 @@
 apiVersion: v2
 name: music-assistant-server
-version: 1.2.0
+version: 2.0.0
 description: Music Assistant is a free, opensource Media library manager that connects to your streaming services and a wide range of connected speakers.
 type: application
 appVersion: "2.7.5"
