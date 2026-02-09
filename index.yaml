@@ -2,6 +2,20 @@ apiVersion: v1
 entries:
   cert-manager-webhook-inwx:
   - apiVersion: v2
+    appVersion: 0.8.2
+    created: "2026-02-09T07:07:02.679837597Z"
+    description: A Helm chart cert-manager ACME Webhook for INWX
+    digest: e06f592a641f4d216a38e14468d16ee77976e5f6c5b7646546e7a81d6b691f08
+    maintainers:
+    - name: Stephan Müller
+      url: https://gitlab.com/smueller18/cert-manager-webhook-inwx
+    - name: Andibraeu
+      url: https://github.com/andibraeu/cert-manager-webhook-inwx
+    name: cert-manager-webhook-inwx
+    urls:
+    - https://github.com/andibraeu/helmcharts/releases/download/cert-manager-webhook-inwx-0.8.2/cert-manager-webhook-inwx-0.8.2.tgz
+    version: 0.8.2
+  - apiVersion: v2
     appVersion: 0.8.1
     created: "2026-02-08T14:07:11.575919198Z"
     description: A Helm chart cert-manager ACME Webhook for INWX
@@ -100,6 +114,32 @@ entries:
     - https://github.com/andibraeu/helmcharts/releases/download/cert-manager-webhook-inwx-0.5.0/cert-manager-webhook-inwx-0.5.0.tgz
     version: 0.5.0
   music-assistant-server:
+  - apiVersion: v2
+    appVersion: 2.7.6
+    created: "2026-02-09T07:07:02.91796407Z"
+    description: Music Assistant is a free, opensource Media library manager that
+      connects to your streaming services and a wide range of connected speakers.
+    digest: ec7f6116655606bc57763cf5877e18d7f1d3e3ad4942d315dbbd610b0fb32776
+    home: https://github.com/andibraeu/helmcharts/tree/main/charts/music-assistant-server
+    icon: https://music-assistant.io/assets/transparent-logo.png
+    keywords:
+    - music-assistant
+    - music-assistant-server
+    - audio
+    - multiroom-audio
+    - home-automation
+    - smart-home
+    kubeVersion: '>=1.16.0-0'
+    maintainers:
+    - name: Andreas Bräu
+      url: https://blog.andi95.de
+    name: music-assistant-server
+    sources:
+    - https://github.com/music-assistant/server
+    type: application
+    urls:
+    - https://github.com/andibraeu/helmcharts/releases/download/music-assistant-server-2.0.1/music-assistant-server-2.0.1.tgz
+    version: 2.0.1
   - apiVersion: v2
     appVersion: 2.7.5
     created: "2026-01-20T11:34:35.932102752Z"
@@ -468,4 +508,4 @@ entries:
     urls:
     - https://github.com/andibraeu/helmcharts/releases/download/openhab-cloud-1.0.15/openhab-cloud-1.0.15.tgz
     version: 1.0.15
-generated: "2026-02-08T14:07:11.575975623Z"
+generated: "2026-02-09T07:07:02.918048283Z"
