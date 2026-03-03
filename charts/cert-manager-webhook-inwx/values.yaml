@@ -12,7 +12,7 @@ certManager:
 
 image:
   repository: ghcr.io/andibraeu/cert-manager-webhook-inwx
-  tag: v0.8.2@sha256:a25e81238591e058c94a577d772077de0461caac299f51a1c987a221a1369b94
+  tag: v0.9.0@sha256:f015e745983e9235125c0a1c2aec8c392f4cfae0adc050b8104096c923bed83f
   pullPolicy: IfNotPresent
 
 nameOverride: ""
