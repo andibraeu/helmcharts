@@ -457,6 +457,25 @@ entries:
   openhab-cloud:
   - apiVersion: v2
     appVersion: a8138a3
+    created: "2026-06-15T15:46:58.303055795Z"
+    dependencies:
+    - condition: redis.enabled
+      name: redis
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 27.0.9
+    - condition: mongodb.enabled
+      name: mongodb
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 15.1.x
+    description: A Helm chart for OpenHAB Cloud
+    digest: 07e0113a40d525da195d2d1f7f6b438721d266bfcfff96a4ddec1e079a858638
+    name: openhab-cloud
+    type: application
+    urls:
+    - https://github.com/andibraeu/helmcharts/releases/download/openhab-cloud-1.2.5/openhab-cloud-1.2.5.tgz
+    version: 1.2.5
+  - apiVersion: v2
+    appVersion: a8138a3
     created: "2026-04-10T14:44:17.230217217Z"
     dependencies:
     - condition: redis.enabled
@@ -607,4 +626,4 @@ entries:
     urls:
     - https://github.com/andibraeu/helmcharts/releases/download/openhab-cloud-1.0.15/openhab-cloud-1.0.15.tgz
     version: 1.0.15
-generated: "2026-04-30T14:02:47.886264321Z"
+generated: "2026-06-15T15:46:58.303127089Z"
