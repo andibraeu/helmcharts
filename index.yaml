@@ -652,4 +652,28 @@ entries:
     urls:
     - https://github.com/andibraeu/helmcharts/releases/download/openhab-cloud-1.0.15/openhab-cloud-1.0.15.tgz
     version: 1.0.15
-generated: "2026-06-15T15:49:25.204274748Z"
+  stalwart:
+  - apiVersion: v2
+    appVersion: v0.16.11
+    created: "2026-06-30T20:12:13.471925732Z"
+    description: Helm chart for the Stalwart mail and collaboration server
+    digest: ba4e4cf251b24af875bd441a1743ee6592ca11328330b04c96f8595f7756e650
+    home: https://stalw.art
+    keywords:
+    - stalwart
+    - mail
+    - smtp
+    - imap
+    - jmap
+    kubeVersion: '>=1.16.0-0'
+    maintainers:
+    - name: Andreas Bräu
+      url: https://blog.andi95.de
+    name: stalwart
+    sources:
+    - https://github.com/stalwartlabs/stalwart
+    type: application
+    urls:
+    - https://github.com/andibraeu/helmcharts/releases/download/stalwart-1.0.0/stalwart-1.0.0.tgz
+    version: 1.0.0
+generated: "2026-06-30T20:12:13.471983019Z"
