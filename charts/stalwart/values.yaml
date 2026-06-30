@@ -1,0 +1,96 @@
+# Container image.
+image:
+  repository: stalwartlabs/stalwart
+  tag: ""  # Leave empty to use the Chart's appVersion as tag
+  pullPolicy: IfNotPresent
+
+# Number of pods in the StatefulSet.
+replicaCount: 1
+
+# Maps to STALWART_ROLE. Leave empty on single-node installs.
+role: ""
+
+# Maps to STALWART_PUSH_SHARD. Only set on nodes whose role delivers push notifications.
+pushShard: ""
+
+# Recovery / bootstrap administrator credential managed by the chart.
+# Prefer env.secretRef with an existing Secret (e.g. SealedSecret) in production.
+recoveryAdmin:
+  enabled: false
+  username: admin
+  password: ""
+
+recoveryMode:
+  enabled: false
+  port: 8080
+  logLevel: info
+
+# Environment variables for existing Secrets (recommended for GitOps setups).
+env:
+  # Secret referenced via envFrom (e.g. STALWART_RECOVERY_ADMIN).
+  secretRef: ""
+  # Injects STALWART_DB_PASSWORD from an existing Secret.
+  dbPasswordSecret:
+    name: ""
+    key: password
+
+# Plain-text extra environment variables.
+extraEnv: {}
+
+# Sensitive extra environment variables rendered into a chart-managed Secret.
+# Ignored when env.secretRef is set and recoveryAdmin.enabled is false.
+extraSecretEnv: {}
+
+# config.json contents. Only the DataStore object belongs here; every other
+# setting lives in the database once the server is bootstrapped.
+config:
+  "@type": RocksDb
+  path: /var/lib/stalwart
+
+service:
+  type: ClusterIP
+  ports:
+    smtp: 25
+    smtps: 465
+    submission: 587
+    imap: 143
+    imaps: 993
+    pop3: 110
+    pop3s: 995
+    sieve: 4190
+    http: 80
+    https: 443
+    mgmt: 8080
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+  hosts:
+    - host: mail.example.org
+      paths:
+        - path: /
+          pathType: Prefix
+          portName: mgmt
+  tls: []
+
+# Persistent volume for /var/lib/stalwart. Disable when using an external DataStore only.
+persistence:
+  enabled: true
+  accessMode: ReadWriteOnce
+  storageClass: ""
+  size: 10Gi
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 256Mi
+  limits:
+    memory: 1Gi
+
+podSecurityContext:
+  fsGroup: 2000
+  runAsUser: 2000
+  runAsGroup: 2000
+
+containerSecurityContext: {}
