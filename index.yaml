@@ -143,6 +143,32 @@ entries:
     version: 0.5.0
   music-assistant-server:
   - apiVersion: v2
+    appVersion: 2.9.8
+    created: "2026-07-12T17:02:55.005169652Z"
+    description: Music Assistant is a free, opensource Media library manager that
+      connects to your streaming services and a wide range of connected speakers.
+    digest: 7f47f37ca8c600c2354eb8adcc863996fa1ae9e52998ba26cfc32dae82d00ec5
+    home: https://github.com/andibraeu/helmcharts/tree/main/charts/music-assistant-server
+    icon: https://music-assistant.io/assets/transparent-logo.png
+    keywords:
+    - music-assistant
+    - music-assistant-server
+    - audio
+    - multiroom-audio
+    - home-automation
+    - smart-home
+    kubeVersion: '>=1.16.0-0'
+    maintainers:
+    - name: Andreas Bräu
+      url: https://blog.andi95.de
+    name: music-assistant-server
+    sources:
+    - https://github.com/music-assistant/server
+    type: application
+    urls:
+    - https://github.com/andibraeu/helmcharts/releases/download/music-assistant-server-2.1.1/music-assistant-server-2.1.1.tgz
+    version: 2.1.1
+  - apiVersion: v2
     appVersion: 2.9.1
     created: "2026-06-15T15:49:25.204192263Z"
     description: Music Assistant is a free, opensource Media library manager that
@@ -483,6 +509,25 @@ entries:
   openhab-cloud:
   - apiVersion: v2
     appVersion: a8138a3
+    created: "2026-07-12T17:02:55.166963037Z"
+    dependencies:
+    - condition: redis.enabled
+      name: redis
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 27.0.15
+    - condition: mongodb.enabled
+      name: mongodb
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 15.1.x
+    description: A Helm chart for OpenHAB Cloud
+    digest: e518cd2e73924ce2bd2a4d20a94cdfeead2f7711f99db07ff671c786d49f942e
+    name: openhab-cloud
+    type: application
+    urls:
+    - https://github.com/andibraeu/helmcharts/releases/download/openhab-cloud-1.2.6/openhab-cloud-1.2.6.tgz
+    version: 1.2.6
+  - apiVersion: v2
+    appVersion: a8138a3
     created: "2026-06-15T15:46:58.303055795Z"
     dependencies:
     - condition: redis.enabled
@@ -676,4 +721,4 @@ entries:
     urls:
     - https://github.com/andibraeu/helmcharts/releases/download/stalwart-1.0.0/stalwart-1.0.0.tgz
     version: 1.0.0
-generated: "2026-06-30T20:12:13.471983019Z"
+generated: "2026-07-12T17:02:55.167067374Z"
