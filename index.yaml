@@ -699,6 +699,29 @@ entries:
     version: 1.0.15
   stalwart:
   - apiVersion: v2
+    appVersion: v0.16.12
+    created: "2026-07-12T17:03:34.938249853Z"
+    description: Helm chart for the Stalwart mail and collaboration server
+    digest: e2716d9c9309f5f306f74f546fd5d409f4e4f2bbf2fa0370220b6a823a890a35
+    home: https://stalw.art
+    keywords:
+    - stalwart
+    - mail
+    - smtp
+    - imap
+    - jmap
+    kubeVersion: '>=1.16.0-0'
+    maintainers:
+    - name: Andreas Bräu
+      url: https://blog.andi95.de
+    name: stalwart
+    sources:
+    - https://github.com/stalwartlabs/stalwart
+    type: application
+    urls:
+    - https://github.com/andibraeu/helmcharts/releases/download/stalwart-1.0.1/stalwart-1.0.1.tgz
+    version: 1.0.1
+  - apiVersion: v2
     appVersion: v0.16.11
     created: "2026-06-30T20:12:13.471925732Z"
     description: Helm chart for the Stalwart mail and collaboration server
@@ -721,4 +744,4 @@ entries:
     urls:
     - https://github.com/andibraeu/helmcharts/releases/download/stalwart-1.0.0/stalwart-1.0.0.tgz
     version: 1.0.0
-generated: "2026-07-12T17:02:55.167067374Z"
+generated: "2026-07-12T17:03:34.938358077Z"
