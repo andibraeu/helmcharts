@@ -3,7 +3,7 @@ name: stalwart
 version: 1.0.1
 description: Helm chart for the Stalwart mail and collaboration server
 type: application
-appVersion: "v0.16.12"
+appVersion: "2.9.9"
 kubeVersion: ">=1.16.0-0"
 home: https://stalw.art
 keywords:
