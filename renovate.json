@@ -4,14 +4,15 @@
     "config:recommended"
   ],
   "kubernetes": {
-    "fileMatch": ["charts/.+/Chart\\.yaml$"]
+    "managerFilePatterns": [
+      "/charts/.+/Chart\\.yaml$/"
+    ]
   },
-  "regexManagers": [
+  "customManagers": [
     {
-      "fileMatch": ["charts/.+/Chart\\.yaml$"],
-      "matchStrings": [
-        "appVersion:\\s*['\"]?(?<currentValue>[^'\"]+)['\"]?"
-      ],
+      "customType": "regex",
+      "managerFilePatterns": ["/charts/.+/Chart\\.yaml$/"],
+      "matchStrings": ["appVersion:\\s*['\"]?(?<currentValue>[^'\"]+)['\"]?"],
       "depNameTemplate": "music-assistant/server",
       "datasourceTemplate": "github-releases",
       "versioningTemplate": "semver"
@@ -19,7 +20,9 @@
   ],
   "packageRules": [
     {
-      "matchPaths": ["charts/music-assistant-server/Chart.yaml"],
+      "matchFileNames": [
+        "charts/music-assistant-server/Chart.yaml"
+      ],
       "matchUpdateTypes": ["minor", "patch"],
       "additionalBranchPrefix": "chart-bump-",
       "bumpVersion": "patch"
