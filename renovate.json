@@ -11,9 +11,17 @@
   "customManagers": [
     {
       "customType": "regex",
-      "managerFilePatterns": ["/charts/.+/Chart\\.yaml$/"],
+      "managerFilePatterns": ["/charts/music-assistant-server/Chart\\.yaml$/"],
       "matchStrings": ["appVersion:\\s*['\"]?(?<currentValue>[^'\"]+)['\"]?"],
       "depNameTemplate": "music-assistant/server",
+      "datasourceTemplate": "github-releases",
+      "versioningTemplate": "semver"
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": ["/charts/stalwart/Chart\\.yaml$/"],
+      "matchStrings": ["appVersion:\\s*['\"]?(?<currentValue>[^'\"]+)['\"]?"],
+      "depNameTemplate": "stalwartlabs/stalwart",
       "datasourceTemplate": "github-releases",
       "versioningTemplate": "semver"
     }
@@ -22,6 +30,14 @@
     {
       "matchFileNames": [
         "charts/music-assistant-server/Chart.yaml"
+      ],
+      "matchUpdateTypes": ["minor", "patch"],
+      "additionalBranchPrefix": "chart-bump-",
+      "bumpVersion": "patch"
+    },
+    {
+      "matchFileNames": [
+        "charts/stalwart/Chart.yaml"
       ],
       "matchUpdateTypes": ["minor", "patch"],
       "additionalBranchPrefix": "chart-bump-",
