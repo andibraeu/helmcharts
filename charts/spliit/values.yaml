@@ -94,7 +94,7 @@ postgresql:
   waitForReady: true
   waitImage:
     repository: busybox
-    tag: "1.37"
+    tag: "1.38"
     pullPolicy: IfNotPresent
 
 # Next.js cache at /usr/app/.next/cache. An emptyDir is always mounted when disabled
