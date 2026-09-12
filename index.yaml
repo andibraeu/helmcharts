@@ -723,6 +723,31 @@ entries:
     urls:
     - https://github.com/andibraeu/helmcharts/releases/download/openhab-cloud-1.0.15/openhab-cloud-1.0.15.tgz
     version: 1.0.15
+  spliit:
+  - apiVersion: v2
+    appVersion: 1.23.1
+    created: "2026-09-12T13:28:14.723554253Z"
+    description: Spliit is a free and open source Splitwise alternative for sharing
+      expenses with friends and family.
+    digest: f14ad3a323d914b74c9d8082f4f6ec31a0cf593b5eedf9af0786e1b7afeb6b8f
+    home: https://github.com/andibraeu/helmcharts/tree/main/charts/spliit
+    icon: https://raw.githubusercontent.com/spliit-app/spliit/main/public/logo-with-text.png
+    keywords:
+    - spliit
+    - expenses
+    - splitwise
+    - finance
+    kubeVersion: '>=1.16.0-0'
+    maintainers:
+    - name: Andreas Bräu
+      url: https://blog.andi95.de
+    name: spliit
+    sources:
+    - https://github.com/spliit-app/spliit
+    type: application
+    urls:
+    - https://github.com/andibraeu/helmcharts/releases/download/spliit-1.0.0/spliit-1.0.0.tgz
+    version: 1.0.0
   stalwart:
   - apiVersion: v2
     appVersion: v0.16.14
@@ -793,4 +818,4 @@ entries:
     urls:
     - https://github.com/andibraeu/helmcharts/releases/download/stalwart-1.0.0/stalwart-1.0.0.tgz
     version: 1.0.0
-generated: "2026-07-24T06:19:49.952765801Z"
+generated: "2026-09-12T13:28:14.723651764Z"
