@@ -1,0 +1,21 @@
+Spliit has been deployed.
+
+1. Application URL:
+{{- if .Values.ingress.enabled }}
+{{- range .Values.ingress.hosts }}
+  https://{{ .host }}
+{{- end }}
+{{- else }}
+  export POD_NAME=$(kubectl get pods --namespace {{ .Release.Namespace }} -l "app.kubernetes.io/name={{ include "spliit.name" . }},app.kubernetes.io/instance={{ .Release.Name }}" -o jsonpath="{.items[0].metadata.name}")
+  kubectl --namespace {{ .Release.Namespace }} port-forward $POD_NAME 3000:{{ .Values.service.port }}
+  echo "Visit http://127.0.0.1:3000"
+{{- end }}
+
+2. Requirements:
+  - PostgreSQL must be reachable at {{ .Values.postgresql.host }}:{{ .Values.postgresql.port }}
+  - Database "{{ .Values.postgresql.database }}" owned by "{{ .Values.postgresql.username }}"
+  - Prisma migrations run automatically on container start
+
+3. Optional features (disabled by default):
+  - Expense documents: S3-compatible object storage
+  - Receipt / category extract: OpenAI-compatible API

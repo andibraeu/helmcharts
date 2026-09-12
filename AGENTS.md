@@ -12,7 +12,9 @@ This is a monorepo containing Helm charts for various applications. All charts a
 charts/
 ├── cert-manager-webhook-inwx/
 ├── music-assistant-server/
-└── ohcloud/
+├── ohcloud/
+├── spliit/
+└── stalwart/
 ```
 
 ## Language and Comments

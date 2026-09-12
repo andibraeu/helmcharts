@@ -1,0 +1,160 @@
+# Container image. Empty tag uses Chart.yaml appVersion.
+image:
+  repository: ghcr.io/spliit-app/spliit
+  tag: ""
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+
+replicaCount: 1
+
+# Recreate avoids Multi-Attach when the Next.js cache PVC is RWO.
+deploymentStrategy:
+  type: Recreate
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  automount: true
+  annotations: {}
+  name: ""
+
+service:
+  type: ClusterIP
+  port: 3000
+  annotations: {}
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+  hosts:
+    - host: spliit.local
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+
+# Runtime application settings. All values are passed as environment variables.
+config:
+  # Public URL of this instance. Used for metadata, sitemap and server actions.
+  baseUrl: "http://localhost:3000"
+  # Currency pre-selected on the new-group form.
+  defaultCurrencyCode: "EUR"
+  # Upload images and attach them to expenses. Requires S3 settings below.
+  enableExpenseDocuments: false
+  # Create expenses from a receipt photo. Requires expense documents and OpenAI.
+  enableReceiptExtract: false
+  # Suggest an expense category from the title. Requires OpenAI.
+  enableCategoryExtract: false
+  s3:
+    uploadKey: ""
+    uploadSecret: ""
+    uploadBucket: ""
+    uploadRegion: ""
+    # Custom endpoint for non-AWS S3 providers such as MinIO.
+    uploadEndpoint: ""
+  openai:
+    apiKey: ""
+    # OpenAI-compatible endpoint. Leave empty for the official API.
+    baseUrl: ""
+    modelReceiptExtract: ""
+    modelCategoryExtract: ""
+  analytics:
+    # Empty disables analytics. Supported: console, plausible.
+    provider: ""
+    plausibleDomain: ""
+    plausibleHost: ""
+
+# Extra plain-text environment variables.
+extraEnv: {}
+
+# Existing Secret loaded via envFrom. Use this for S3, OpenAI or extra secrets.
+# Typical keys: S3_UPLOAD_KEY, S3_UPLOAD_SECRET, OPENAI_API_KEY
+existingSecret: ""
+
+# External PostgreSQL. Spliit does not bundle a database.
+# Provide postgresql.existingSecret (username/password) or postgresql.password.
+# Passwords used in constructed URLs must be URL-safe (no @ : / # ?).
+postgresql:
+  host: ""
+  port: 5432
+  database: spliit
+  username: spliit
+  password: ""
+  existingSecret: ""
+  existingSecretUsernameKey: username
+  existingSecretPasswordKey: password
+  # When set, these keys are used as full connection URLs instead of constructing them.
+  existingSecretPrismaUrlKey: ""
+  existingSecretNonPoolingUrlKey: ""
+  # Wait for TCP connectivity before starting the app (useful with CloudNative-PG).
+  waitForReady: true
+  waitImage:
+    repository: busybox
+    tag: "1.37"
+    pullPolicy: IfNotPresent
+
+# Next.js cache at /usr/app/.next/cache. An emptyDir is always mounted when disabled
+# so the process can run as uid 1000.
+persistence:
+  enabled: false
+  size: 1Gi
+  mountPath: /usr/app/.next/cache
+  accessMode: ReadWriteOnce
+  storageClass: ""
+  existingClaim: ""
+
+podSecurityContext:
+  fsGroup: 1000
+  runAsUser: 1000
+  runAsGroup: 1000
+  runAsNonRoot: true
+
+containerSecurityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL
+
+resources: {}
+  # limits:
+  #   cpu: 500m
+  #   memory: 512Mi
+  # requests:
+  #   cpu: 50m
+  #   memory: 256Mi
+
+livenessProbe:
+  httpGet:
+    path: /api/health/liveness
+    port: http
+  periodSeconds: 10
+  timeoutSeconds: 3
+  failureThreshold: 3
+
+readinessProbe:
+  httpGet:
+    path: /api/health/readiness
+    port: http
+  periodSeconds: 10
+  timeoutSeconds: 3
+  failureThreshold: 3
+
+# Migrations run in the container entrypoint before the server starts.
+startupProbe:
+  httpGet:
+    path: /api/health/liveness
+    port: http
+  periodSeconds: 10
+  timeoutSeconds: 3
+  failureThreshold: 30
+
+podAnnotations: {}
+podLabels: {}
+
+nodeSelector: {}
+tolerations: []
+affinity: {}

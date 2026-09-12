@@ -1,0 +1,20 @@
+apiVersion: v2
+name: spliit
+version: "1.0.0"
+description: Spliit is a free and open source Splitwise alternative for sharing expenses with friends and family.
+type: application
+appVersion: "1.23.1"
+kubeVersion: ">=1.16.0-0"
+icon: https://raw.githubusercontent.com/spliit-app/spliit/main/public/logo-with-text.png
+home: https://github.com/andibraeu/helmcharts/tree/main/charts/spliit
+keywords:
+  - spliit
+  - expenses
+  - splitwise
+  - finance
+sources:
+  - https://github.com/spliit-app/spliit
+maintainers:
+  - name: Andreas Bräu
+    url: https://blog.andi95.de
+dependencies: []

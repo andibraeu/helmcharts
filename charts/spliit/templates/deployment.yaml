@@ -1,0 +1,205 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "spliit.fullname" . }}
+  labels:
+    {{- include "spliit.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  {{- with .Values.deploymentStrategy }}
+  strategy:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "spliit.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "spliit.selectorLabels" . | nindent 8 }}
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ default (include "spliit.fullname" .) .Values.serviceAccount.name }}
+      {{- with .Values.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if and .Values.postgresql.waitForReady .Values.postgresql.host }}
+      initContainers:
+        - name: wait-for-postgres
+          image: "{{ .Values.postgresql.waitImage.repository }}:{{ .Values.postgresql.waitImage.tag }}"
+          imagePullPolicy: {{ .Values.postgresql.waitImage.pullPolicy }}
+          command:
+            - sh
+            - -c
+            - |
+              until nc -z {{ .Values.postgresql.host | quote }} {{ .Values.postgresql.port }}; do
+                echo "waiting for postgres at {{ .Values.postgresql.host }}:{{ .Values.postgresql.port }}"
+                sleep 2
+              done
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            runAsNonRoot: true
+            runAsUser: 65534
+            runAsGroup: 65534
+      {{- end }}
+      containers:
+        - name: spliit
+          image: "{{ .Values.image.repository }}:{{ include "spliit.imageTag" . }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{- with .Values.containerSecurityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.port }}
+          env:
+            - name: HOSTNAME
+              value: "0.0.0.0"
+            - name: PORT
+              value: {{ .Values.service.port | quote }}
+            - name: BASE_URL
+              value: {{ .Values.config.baseUrl | quote }}
+            - name: DEFAULT_CURRENCY_CODE
+              value: {{ .Values.config.defaultCurrencyCode | quote }}
+            - name: ENABLE_EXPENSE_DOCUMENTS
+              value: {{ .Values.config.enableExpenseDocuments | quote }}
+            - name: ENABLE_RECEIPT_EXTRACT
+              value: {{ .Values.config.enableReceiptExtract | quote }}
+            - name: ENABLE_CATEGORY_EXTRACT
+              value: {{ .Values.config.enableCategoryExtract | quote }}
+            {{- if .Values.config.s3.uploadKey }}
+            - name: S3_UPLOAD_KEY
+              value: {{ .Values.config.s3.uploadKey | quote }}
+            {{- end }}
+            {{- if .Values.config.s3.uploadSecret }}
+            - name: S3_UPLOAD_SECRET
+              value: {{ .Values.config.s3.uploadSecret | quote }}
+            {{- end }}
+            {{- if .Values.config.s3.uploadBucket }}
+            - name: S3_UPLOAD_BUCKET
+              value: {{ .Values.config.s3.uploadBucket | quote }}
+            {{- end }}
+            {{- if .Values.config.s3.uploadRegion }}
+            - name: S3_UPLOAD_REGION
+              value: {{ .Values.config.s3.uploadRegion | quote }}
+            {{- end }}
+            {{- if .Values.config.s3.uploadEndpoint }}
+            - name: S3_UPLOAD_ENDPOINT
+              value: {{ .Values.config.s3.uploadEndpoint | quote }}
+            {{- end }}
+            {{- if .Values.config.openai.apiKey }}
+            - name: OPENAI_API_KEY
+              value: {{ .Values.config.openai.apiKey | quote }}
+            {{- end }}
+            {{- if .Values.config.openai.baseUrl }}
+            - name: OPENAI_BASE_URL
+              value: {{ .Values.config.openai.baseUrl | quote }}
+            {{- end }}
+            {{- if .Values.config.openai.modelReceiptExtract }}
+            - name: OPENAI_MODEL_RECEIPT_EXTRACT
+              value: {{ .Values.config.openai.modelReceiptExtract | quote }}
+            {{- end }}
+            {{- if .Values.config.openai.modelCategoryExtract }}
+            - name: OPENAI_MODEL_CATEGORY_EXTRACT
+              value: {{ .Values.config.openai.modelCategoryExtract | quote }}
+            {{- end }}
+            {{- if .Values.config.analytics.provider }}
+            - name: ANALYTICS_PROVIDER
+              value: {{ .Values.config.analytics.provider | quote }}
+            {{- end }}
+            {{- if .Values.config.analytics.plausibleDomain }}
+            - name: PLAUSIBLE_DOMAIN
+              value: {{ .Values.config.analytics.plausibleDomain | quote }}
+            {{- end }}
+            {{- if .Values.config.analytics.plausibleHost }}
+            - name: PLAUSIBLE_HOST
+              value: {{ .Values.config.analytics.plausibleHost | quote }}
+            {{- end }}
+            {{- if and .Values.postgresql.existingSecret .Values.postgresql.existingSecretPrismaUrlKey }}
+            - name: POSTGRES_PRISMA_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.postgresql.existingSecret }}
+                  key: {{ .Values.postgresql.existingSecretPrismaUrlKey }}
+            - name: POSTGRES_URL_NON_POOLING
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.postgresql.existingSecret }}
+                  key: {{ default .Values.postgresql.existingSecretPrismaUrlKey .Values.postgresql.existingSecretNonPoolingUrlKey }}
+            {{- else }}
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "spliit.postgresSecretName" . }}
+                  key: {{ .Values.postgresql.existingSecretUsernameKey }}
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "spliit.postgresSecretName" . }}
+                  key: {{ .Values.postgresql.existingSecretPasswordKey }}
+            - name: POSTGRES_PRISMA_URL
+              value: {{ include "spliit.postgresUrl" . | quote }}
+            - name: POSTGRES_URL_NON_POOLING
+              value: {{ include "spliit.postgresUrl" . | quote }}
+            {{- end }}
+            {{- range $key, $value := .Values.extraEnv }}
+            - name: {{ $key }}
+              value: {{ $value | quote }}
+            {{- end }}
+          {{- if .Values.existingSecret }}
+          envFrom:
+            - secretRef:
+                name: {{ .Values.existingSecret }}
+          {{- end }}
+          {{- with .Values.livenessProbe }}
+          livenessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.readinessProbe }}
+          readinessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.startupProbe }}
+          startupProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          volumeMounts:
+            - name: cache
+              mountPath: {{ .Values.persistence.mountPath }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      volumes:
+        - name: cache
+          {{- if .Values.persistence.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ default (include "spliit.fullname" .) .Values.persistence.existingClaim }}
+          {{- else }}
+          emptyDir: {}
+          {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

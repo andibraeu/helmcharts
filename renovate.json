@@ -24,6 +24,14 @@
       "depNameTemplate": "stalwartlabs/stalwart",
       "datasourceTemplate": "github-releases",
       "versioningTemplate": "semver"
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": ["/charts/spliit/Chart\\.yaml$/"],
+      "matchStrings": ["appVersion:\\s*['\"]?(?<currentValue>[^'\"]+)['\"]?"],
+      "depNameTemplate": "ghcr.io/spliit-app/spliit",
+      "datasourceTemplate": "docker",
+      "versioningTemplate": "semver"
     }
   ],
   "packageRules": [
@@ -38,6 +46,14 @@
     {
       "matchFileNames": [
         "charts/stalwart/Chart.yaml"
+      ],
+      "matchUpdateTypes": ["minor", "patch"],
+      "additionalBranchPrefix": "chart-bump-",
+      "bumpVersion": "patch"
+    },
+    {
+      "matchFileNames": [
+        "charts/spliit/Chart.yaml"
       ],
       "matchUpdateTypes": ["minor", "patch"],
       "additionalBranchPrefix": "chart-bump-",
