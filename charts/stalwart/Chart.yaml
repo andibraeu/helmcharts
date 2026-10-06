@@ -1,9 +1,9 @@
 apiVersion: v2
 name: stalwart
-version: 1.0.3
+version: 1.0.4
 description: Helm chart for the Stalwart mail and collaboration server
 type: application
-appVersion: "v0.16.24"
+appVersion: "v0.16.25"
 kubeVersion: ">=1.16.0-0"
 home: https://stalw.art
 keywords:
