@@ -1,0 +1,45 @@
+{{- if include "opencloud.needsProxyConfig" . }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "opencloud.fullname" . }}-proxy
+  labels:
+    {{- include "opencloud.labels" . | nindent 4 }}
+data:
+  proxy.yaml: |
+    additional_policies:
+      - name: default
+        routes:
+          {{- if .Values.yjs.enabled }}
+          - endpoint: /yjs
+            backend: http://{{ include "opencloud.fullname" . }}-yjs:1234
+            unprotected: true
+          {{- end }}
+          {{- if .Values.radicale.enabled }}
+          {{- $radicaleUrl := .Values.radicale.url | trimSuffix "/" }}
+          - endpoint: /caldav/
+            backend: {{ $radicaleUrl }}
+            remote_user_header: X-Remote-User
+            skip_x_access_token: true
+            additional_headers:
+              - X-Script-Name: /caldav
+          - endpoint: /.well-known/caldav
+            backend: {{ $radicaleUrl }}
+            remote_user_header: X-Remote-User
+            skip_x_access_token: true
+            additional_headers:
+              - X-Script-Name: /caldav
+          - endpoint: /carddav/
+            backend: {{ $radicaleUrl }}
+            remote_user_header: X-Remote-User
+            skip_x_access_token: true
+            additional_headers:
+              - X-Script-Name: /carddav
+          - endpoint: /.well-known/carddav
+            backend: {{ $radicaleUrl }}
+            remote_user_header: X-Remote-User
+            skip_x_access_token: true
+            additional_headers:
+              - X-Script-Name: /carddav
+          {{- end }}
+{{- end }}

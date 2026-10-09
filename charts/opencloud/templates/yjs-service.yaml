@@ -1,0 +1,17 @@
+{{- if .Values.yjs.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "opencloud.fullname" . }}-yjs
+  labels:
+    {{- include "opencloud.yjs.labels" . | nindent 4 }}
+spec:
+  type: ClusterIP
+  ports:
+    - name: yjs
+      port: 1234
+      targetPort: yjs
+      protocol: TCP
+  selector:
+    {{- include "opencloud.yjs.selectorLabels" . | nindent 4 }}
+{{- end }}

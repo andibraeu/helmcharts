@@ -1,0 +1,255 @@
+{{- include "opencloud.validate" . }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "opencloud.fullname" . }}
+  labels:
+    {{- include "opencloud.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  {{- with .Values.deploymentStrategy }}
+  strategy:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "opencloud.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "opencloud.selectorLabels" . | nindent 8 }}
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      annotations:
+        {{- if include "opencloud.needsProxyConfig" . }}
+        checksum/proxy: {{ include (print $.Template.BasePath "/proxy-configmap.yaml") . | sha256sum }}
+        {{- end }}
+        {{- with .Values.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: opencloud
+          image: "{{ .Values.image.repository }}:{{ include "opencloud.imageTag" . }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{- with .Values.containerSecurityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          command:
+            - /bin/sh
+            - -c
+            - opencloud init || true; opencloud server
+          env:
+            - name: OC_URL
+              value: {{ include "opencloud.externalUrl" . | quote }}
+            - name: PROXY_HTTP_ADDR
+              value: "0.0.0.0:{{ .Values.service.port }}"
+            - name: PROXY_TLS
+              value: "false"
+            - name: PROXY_DEBUG_ADDR
+              value: "0.0.0.0:9205"
+            - name: STORAGE_USERS_DRIVER
+              value: {{ .Values.storage.driver | quote }}
+            {{- if eq .Values.storage.driver "posix" }}
+            - name: STORAGE_USERS_ID_CACHE_STORE
+              value: nats-js-kv
+            - name: STORAGE_USERS_POSIX_WATCH_FS
+              value: {{ .Values.storage.posixWatchFs | quote }}
+            {{- end }}
+            {{- if or .Values.existingSecret .Values.adminPassword }}
+            - name: IDM_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "opencloud.adminSecretName" . }}
+                  key: {{ .Values.existingSecretKey | quote }}
+            {{- end }}
+            {{- $addServices := list }}
+            {{- if .Values.collaboration.enabled }}
+            {{- $addServices = append $addServices "collaboration" }}
+            {{- end }}
+            {{- if .Values.smtp.enabled }}
+            {{- $addServices = append $addServices "notifications" }}
+            {{- end }}
+            {{- if gt (len $addServices) 0 }}
+            - name: OC_ADD_RUN_SERVICES
+              value: {{ join "," $addServices | quote }}
+            {{- end }}
+            {{- if .Values.oidc.external.enabled }}
+            - name: OC_OIDC_ISSUER
+              value: {{ .Values.oidc.external.issuer | quote }}
+            {{- if .Values.oidc.external.domain }}
+            - name: IDP_DOMAIN
+              value: {{ .Values.oidc.external.domain | quote }}
+            {{- end }}
+            - name: OC_EXCLUDE_RUN_SERVICES
+              value: idp
+            - name: PROXY_OIDC_REWRITE_WELLKNOWN
+              value: {{ .Values.oidc.external.rewriteWellKnown | quote }}
+            - name: PROXY_OIDC_ACCESS_TOKEN_VERIFY_METHOD
+              value: {{ .Values.oidc.external.accessTokenVerifyMethod | quote }}
+            {{- if .Values.oidc.external.accessTokenVerifyAudience }}
+            - name: PROXY_OIDC_ACCESS_TOKEN_VERIFY_AUDIENCE
+              value: {{ .Values.oidc.external.accessTokenVerifyAudience | quote }}
+            {{- end }}
+            - name: PROXY_OIDC_INSECURE
+              value: {{ .Values.oidc.external.insecure | quote }}
+            - name: PROXY_USER_OIDC_CLAIM
+              value: {{ .Values.oidc.external.userOidcClaim | quote }}
+            - name: PROXY_USER_CS3_CLAIM
+              value: {{ .Values.oidc.external.userCs3Claim | quote }}
+            - name: PROXY_AUTOPROVISION_ACCOUNTS
+              value: {{ .Values.oidc.external.autoprovisionAccounts | quote }}
+            - name: PROXY_ROLE_ASSIGNMENT_DRIVER
+              value: {{ .Values.oidc.external.roleAssignmentDriver | quote }}
+            {{- if eq .Values.oidc.external.roleAssignmentDriver "oidc" }}
+            - name: PROXY_ROLE_ASSIGNMENT_OIDC_CLAIM
+              value: {{ .Values.oidc.external.roleAssignmentOidcClaim | quote }}
+            - name: GRAPH_ASSIGN_DEFAULT_USER_ROLE
+              value: "false"
+            {{- end }}
+            - name: WEBFINGER_WEB_OIDC_CLIENT_ID
+              value: {{ .Values.oidc.clients.web.clientId | quote }}
+            - name: WEBFINGER_WEB_OIDC_CLIENT_SCOPES
+              value: {{ .Values.oidc.clients.web.scopes | quote }}
+            - name: WEBFINGER_DESKTOP_OIDC_CLIENT_ID
+              value: {{ .Values.oidc.clients.desktop.clientId | quote }}
+            - name: WEBFINGER_DESKTOP_OIDC_CLIENT_SCOPES
+              value: {{ .Values.oidc.clients.desktop.scopes | quote }}
+            - name: WEBFINGER_ANDROID_OIDC_CLIENT_ID
+              value: {{ .Values.oidc.clients.android.clientId | quote }}
+            - name: WEBFINGER_ANDROID_OIDC_CLIENT_SCOPES
+              value: {{ .Values.oidc.clients.android.scopes | quote }}
+            - name: WEBFINGER_IOS_OIDC_CLIENT_ID
+              value: {{ .Values.oidc.clients.ios.clientId | quote }}
+            - name: WEBFINGER_IOS_OIDC_CLIENT_SCOPES
+              value: {{ .Values.oidc.clients.ios.scopes | quote }}
+            {{- end }}
+            {{- if .Values.collaboration.enabled }}
+            - name: COLLABORATION_APP_ADDR
+              value: {{ .Values.collaboration.appAddr | quote }}
+            - name: COLLABORATION_APP_PRODUCT
+              value: {{ .Values.collaboration.appProduct | quote }}
+            - name: COLLABORATION_APP_NAME
+              value: {{ .Values.collaboration.appName | quote }}
+            {{- if .Values.collaboration.appIcon }}
+            - name: COLLABORATION_APP_ICON
+              value: {{ .Values.collaboration.appIcon | quote }}
+            {{- end }}
+            - name: COLLABORATION_WOPI_SRC
+              value: {{ default (include "opencloud.externalUrl" .) .Values.collaboration.wopiSrc | quote }}
+            - name: COLLABORATION_APP_INSECURE
+              value: {{ .Values.collaboration.insecure | quote }}
+            - name: COLLABORATION_CS3API_DATAGATEWAY_INSECURE
+              value: {{ .Values.collaboration.insecure | quote }}
+            {{- end }}
+            {{- if .Values.yjs.enabled }}
+            - name: WEB_OPTION_YJS_SERVER_URL
+              value: {{ printf "wss://%s/yjs" (include "opencloud.hostname" .) | quote }}
+            {{- end }}
+            {{- if .Values.smtp.enabled }}
+            - name: NOTIFICATIONS_SMTP_HOST
+              value: {{ .Values.smtp.host | quote }}
+            - name: NOTIFICATIONS_SMTP_PORT
+              value: {{ .Values.smtp.port | quote }}
+            - name: NOTIFICATIONS_SMTP_SENDER
+              value: {{ .Values.smtp.sender | quote }}
+            - name: NOTIFICATIONS_SMTP_USERNAME
+              value: {{ .Values.smtp.username | quote }}
+            {{- if .Values.smtp.existingSecret }}
+            - name: NOTIFICATIONS_SMTP_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.smtp.existingSecret }}
+                  key: {{ .Values.smtp.existingSecretKey }}
+            {{- else if .Values.smtp.password }}
+            - name: NOTIFICATIONS_SMTP_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "opencloud.adminSecretName" . }}
+                  key: smtp-password
+            {{- end }}
+            - name: NOTIFICATIONS_SMTP_ENCRYPTION
+              value: {{ .Values.smtp.encryption | quote }}
+            - name: NOTIFICATIONS_SMTP_AUTHENTICATION
+              value: {{ .Values.smtp.authentication | quote }}
+            - name: NOTIFICATIONS_SMTP_INSECURE
+              value: {{ .Values.smtp.insecure | quote }}
+            {{- end }}
+            {{- range $key, $value := .Values.extraEnv }}
+            - name: {{ $key }}
+              value: {{ $value | quote }}
+            {{- end }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.port }}
+              protocol: TCP
+            - name: debug
+              containerPort: 9205
+              protocol: TCP
+          volumeMounts:
+            - name: config
+              mountPath: /etc/opencloud
+            - name: data
+              mountPath: /var/lib/opencloud
+            {{- if include "opencloud.needsProxyConfig" . }}
+            - name: proxy-config
+              mountPath: /etc/opencloud/proxy.yaml
+              subPath: proxy.yaml
+              readOnly: true
+            {{- end }}
+          {{- with .Values.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: debug
+              scheme: HTTP
+            initialDelaySeconds: 60
+            periodSeconds: 30
+            timeoutSeconds: 5
+            failureThreshold: 5
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: debug
+              scheme: HTTP
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: {{ include "opencloud.configPvcName" . }}
+        - name: data
+          persistentVolumeClaim:
+            claimName: {{ include "opencloud.dataPvcName" . }}
+        {{- if include "opencloud.needsProxyConfig" . }}
+        - name: proxy-config
+          configMap:
+            name: {{ include "opencloud.fullname" . }}-proxy
+        {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

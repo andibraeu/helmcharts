@@ -1,0 +1,46 @@
+OpenCloud has been deployed.
+
+1. Application URL:
+{{- if .Values.ingress.enabled }}
+  {{ include "opencloud.externalUrl" . }}
+{{- else }}
+  export POD_NAME=$(kubectl get pods --namespace {{ .Release.Namespace }} -l "app.kubernetes.io/name={{ include "opencloud.name" . }},app.kubernetes.io/instance={{ .Release.Name }}" -o jsonpath="{.items[0].metadata.name}")
+  kubectl --namespace {{ .Release.Namespace }} port-forward $POD_NAME {{ .Values.service.port }}:{{ .Values.service.port }}
+  echo "Visit http://127.0.0.1:{{ .Values.service.port }}"
+{{- end }}
+
+2. Persistence:
+  - Config PVC: {{ include "opencloud.configPvcName" . }} (/etc/opencloud)
+  - Data PVC:   {{ include "opencloud.dataPvcName" . }} (/var/lib/opencloud)
+  Back up both volumes together. They are created as a matching pair by "opencloud init".
+
+3. Authentication:
+{{- if .Values.oidc.external.enabled }}
+  External OIDC issuer: {{ .Values.oidc.external.issuer }}
+  Register public clients with PKCE using the WebFinger client IDs (web, OpenCloudDesktop, OpenCloudAndroid, OpenCloudIOS).
+{{- else }}
+  Built-in IdP is enabled.
+  {{- if or .Values.existingSecret .Values.adminPassword }}
+  Log in as admin with the password from Secret {{ include "opencloud.adminSecretName" . }}.
+  {{- else }}
+  No adminPassword/existingSecret was set; OpenCloud generated one during init. Check the pod logs for the initial password, or set adminPassword / existingSecret on a fresh install.
+  {{- end }}
+{{- end }}
+
+4. Optional features:
+{{- if .Values.collaboration.enabled }}
+  - Office collaboration: {{ .Values.collaboration.appProduct }} at {{ .Values.collaboration.appAddr }}
+    Ensure the office server aliasgroup allows {{ include "opencloud.externalUrl" . }}
+{{- else }}
+  - Office collaboration: disabled (set collaboration.enabled + collaboration.appAddr)
+{{- end }}
+{{- if .Values.radicale.enabled }}
+  - CalDAV/CardDAV proxy to: {{ .Values.radicale.url }}
+{{- else }}
+  - Radicale proxy: disabled (use Stalwart or set radicale.enabled + radicale.url)
+{{- end }}
+{{- if .Values.yjs.enabled }}
+  - Live editing (Yjs): wss://{{ include "opencloud.hostname" . }}/yjs
+{{- else }}
+  - Live editing (Yjs): disabled (set yjs.enabled=true)
+{{- end }}

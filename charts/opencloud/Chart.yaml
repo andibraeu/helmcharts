@@ -1,0 +1,20 @@
+apiVersion: v2
+name: opencloud
+version: 1.0.0
+description: Helm chart for OpenCloud file sync and share without S3 or enterprise dependencies
+type: application
+appVersion: "8.1.0"
+kubeVersion: ">=1.16.0-0"
+home: https://github.com/andibraeu/helmcharts/tree/main/charts/opencloud
+
+keywords:
+  - opencloud
+  - file-sync
+  - file-share
+  - oidc
+sources:
+  - https://github.com/opencloud-eu/opencloud
+maintainers:
+  - name: Andreas Bräu
+    url: https://blog.andi95.de
+dependencies: []

@@ -1,0 +1,188 @@
+# Container image for OpenCloud (rolling channel).
+image:
+  repository: opencloudeu/opencloud-rolling
+  # Leave empty to use Chart.yaml appVersion.
+  tag: ""
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+# Keep at 1 with ReadWriteOnce. Multiple replicas need ReadWriteMany storage.
+replicaCount: 1
+
+deploymentStrategy:
+  type: Recreate
+
+# Public URL of this OpenCloud instance (scheme + host, optional port).
+# When empty and ingress is enabled, derived as https://<ingress.hostname>.
+externalUrl: ""
+
+# Admin password for the built-in IDM (IDM_ADMIN_PASSWORD).
+# Prefer existingSecret in production (e.g. SealedSecret / ExternalSecret).
+adminPassword: ""
+existingSecret: ""
+# Key inside existingSecret that holds the admin password.
+existingSecretKey: admin-password
+
+# Storage driver for user files. Supported: posix (default), decomposed.
+# decomposeds3 and owncloudsql are not supported by this chart.
+storage:
+  driver: posix
+  # Enable filesystem watcher for local POSIX volumes (ext4, XFS, ...).
+  posixWatchFs: true
+
+persistence:
+  config:
+    enabled: true
+    existingClaim: ""
+    accessMode: ReadWriteOnce
+    storageClass: ""
+    size: 1Gi
+    # Annotations for backup tools, e.g. Velero / k8up / Longhorn.
+    annotations: {}
+      # backup.velero.io/backup-volumes: opencloud-config
+      # k8up.io/backup: "true"
+  data:
+    enabled: true
+    existingClaim: ""
+    accessMode: ReadWriteOnce
+    storageClass: ""
+    size: 30Gi
+    annotations: {}
+      # backup.velero.io/backup-volumes: opencloud-data
+      # k8up.io/backup: "true"
+
+service:
+  type: ClusterIP
+  port: 9200
+
+ingress:
+  enabled: false
+  className: ""
+  hostname: opencloud.example.com
+  annotations: {}
+    # nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    # cert-manager.io/cluster-issuer: letsencrypt
+  tls:
+    enabled: false
+    secretName: opencloud-tls
+
+# External OpenID Connect provider. When disabled, the built-in IdP is used.
+oidc:
+  external:
+    enabled: false
+    # Issuer URL, e.g. https://auth.example.com/realms/openCloud
+    issuer: ""
+    # Hostname without scheme, e.g. auth.example.com
+    domain: ""
+    accessTokenVerifyMethod: jwt
+    rewriteWellKnown: true
+    # Optional audience validation (OpenCloud 8.1+). Leave empty to disable.
+    accessTokenVerifyAudience: ""
+    insecure: false
+    userOidcClaim: preferred_username
+    userCs3Claim: username
+    autoprovisionAccounts: true
+    roleAssignmentDriver: default
+    roleAssignmentOidcClaim: roles
+  # WebFinger client discovery overrides (defaults match OpenCloud docs).
+  clients:
+    web:
+      clientId: web
+      scopes: "openid profile email"
+    desktop:
+      clientId: OpenCloudDesktop
+      scopes: "openid profile email offline_access"
+    android:
+      clientId: OpenCloudAndroid
+      scopes: "openid profile email offline_access"
+    ios:
+      clientId: OpenCloudIOS
+      scopes: "openid profile email offline_access"
+
+# Connect to an external Collabora / OnlyOffice / Euro Office instance.
+# This chart does not deploy an office server.
+collaboration:
+  enabled: false
+  # Public URL of the office server, e.g. https://collabora.example.com
+  appAddr: ""
+  # Collabora | OnlyOffice | Microsoft365 | MicrosoftOfficeOnline
+  appProduct: Collabora
+  appName: CollaboraOnline
+  appIcon: ""
+  # Leave empty to use externalUrl / ingress hostname as WOPI source.
+  wopiSrc: ""
+  insecure: false
+
+# Proxy authenticated CalDAV/CardDAV traffic to an external Radicale.
+# This chart does not deploy Radicale. Leave disabled when using Stalwart.
+radicale:
+  enabled: false
+  # Cluster-internal or external URL, e.g. http://radicale.radicale.svc:5232
+  url: ""
+
+# Optional Yjs / Hocuspocus relay for live Markdown, .ocnote and Excalidraw.
+yjs:
+  enabled: false
+  image:
+    repository: opencloudeu/yjs
+    tag: "1.1.0"
+    pullPolicy: IfNotPresent
+  # Leave empty to use the chart OpenCloud service URL.
+  opencloudUrl: ""
+  resources: {}
+  #   requests:
+  #     cpu: 50m
+  #     memory: 64Mi
+  #   limits:
+  #     memory: 256Mi
+
+# Optional SMTP settings for mail notifications (no mail server is deployed).
+smtp:
+  enabled: false
+  host: ""
+  port: 587
+  sender: ""
+  username: ""
+  # Prefer existingSecret for the password in production.
+  password: ""
+  existingSecret: ""
+  existingSecretKey: smtp-password
+  encryption: starttls
+  authentication: true
+  insecure: false
+
+resources: {}
+  # requests:
+  #   cpu: 500m
+  #   memory: 1Gi
+  # limits:
+  #   memory: 2Gi
+
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext:
+  fsGroup: 1000
+  runAsUser: 1000
+  runAsGroup: 1000
+  runAsNonRoot: true
+
+containerSecurityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL
+  readOnlyRootFilesystem: false
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
+
+# Extra plain environment variables.
+extraEnv: {}
+
+# Extra sensitive environment variables rendered into the chart Secret.
+extraSecretEnv: {}
