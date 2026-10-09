@@ -558,6 +558,30 @@ entries:
     urls:
     - https://github.com/andibraeu/helmcharts/releases/download/music-assistant-server-1.0.0/music-assistant-server-1.0.0.tgz
     version: 1.0.0
+  opencloud:
+  - apiVersion: v2
+    appVersion: 8.1.0
+    created: "2026-10-09T16:17:37.578431585Z"
+    description: Helm chart for OpenCloud file sync and share without S3 or enterprise
+      dependencies
+    digest: 67fafb307d32d398d78bad6ed4e0648317cd4db8413f7fc98b740d39c3675dfd
+    home: https://github.com/andibraeu/helmcharts/tree/main/charts/opencloud
+    keywords:
+    - opencloud
+    - file-sync
+    - file-share
+    - oidc
+    kubeVersion: '>=1.16.0-0'
+    maintainers:
+    - name: Andreas Bräu
+      url: https://blog.andi95.de
+    name: opencloud
+    sources:
+    - https://github.com/opencloud-eu/opencloud
+    type: application
+    urls:
+    - https://github.com/andibraeu/helmcharts/releases/download/opencloud-1.0.0/opencloud-1.0.0.tgz
+    version: 1.0.0
   openhab-cloud:
   - apiVersion: v2
     appVersion: a8138a3
@@ -891,4 +915,4 @@ entries:
     urls:
     - https://github.com/andibraeu/helmcharts/releases/download/stalwart-1.0.0/stalwart-1.0.0.tgz
     version: 1.0.0
-generated: "2026-10-04T20:25:10.954548558Z"
+generated: "2026-10-09T16:17:37.578519151Z"
