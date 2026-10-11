@@ -13,6 +13,7 @@ charts/
 ├── cert-manager-webhook-inwx/
 ├── music-assistant-server/
 ├── ohcloud/
+├── opencloud/
 ├── spliit/
 └── stalwart/
 ```

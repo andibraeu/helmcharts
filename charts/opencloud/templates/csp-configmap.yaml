@@ -1,0 +1,39 @@
+{{- if include "opencloud.needsCsp" . }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "opencloud.fullname" . }}-csp
+  labels:
+    {{- include "opencloud.labels" . | nindent 4 }}
+data:
+  csp.yaml: |
+    directives:
+      {{- $connect := include "opencloud.cspConnectSrc" . | fromJsonArray }}
+      {{- if $connect }}
+      connect-src:
+        {{- range $connect }}
+        - {{ . | quote }}
+        {{- end }}
+      {{- end }}
+      {{- $frame := include "opencloud.cspFrameSrc" . | fromJsonArray }}
+      {{- if $frame }}
+      frame-src:
+        {{- range $frame }}
+        - {{ . | quote }}
+        {{- end }}
+      {{- end }}
+      {{- $img := include "opencloud.cspImgSrc" . | fromJsonArray }}
+      {{- if $img }}
+      img-src:
+        {{- range $img }}
+        - {{ . | quote }}
+        {{- end }}
+      {{- end }}
+      {{- $script := include "opencloud.cspScriptSrc" . | fromJsonArray }}
+      {{- if $script }}
+      script-src:
+        {{- range $script }}
+        - {{ . | quote }}
+        {{- end }}
+      {{- end }}
+{{- end }}

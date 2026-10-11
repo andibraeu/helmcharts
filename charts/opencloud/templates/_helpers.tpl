@@ -113,6 +113,74 @@ true
 {{- end -}}
 {{- end -}}
 
+{{/* scheme://host[:port] of a URL. Empty when scheme or host is missing. */}}
+{{- define "opencloud.urlOrigin" -}}
+{{- $u := urlParse . -}}
+{{- if and $u.scheme $u.host -}}
+{{- printf "%s://%s" $u.scheme $u.host -}}
+{{- end -}}
+{{- end -}}
+
+{{- define "opencloud.cspConnectSrc" -}}
+{{- $items := list -}}
+{{- if and .Values.oidc.external.enabled .Values.oidc.external.issuer -}}
+{{- $origin := include "opencloud.urlOrigin" .Values.oidc.external.issuer -}}
+{{- if $origin -}}
+{{- $items = append $items $origin -}}
+{{- end -}}
+{{- end -}}
+{{- $items = concat $items (.Values.csp.extra.connectSrc | default list) -}}
+{{- toJson (compact (uniq $items)) -}}
+{{- end -}}
+
+{{- define "opencloud.cspFrameSrc" -}}
+{{- $items := list -}}
+{{- if and .Values.oidc.external.enabled .Values.oidc.external.issuer -}}
+{{- $origin := include "opencloud.urlOrigin" .Values.oidc.external.issuer -}}
+{{- if $origin -}}
+{{- $items = append $items $origin -}}
+{{- end -}}
+{{- end -}}
+{{- if and .Values.collaboration.enabled .Values.collaboration.appAddr -}}
+{{- $origin := include "opencloud.urlOrigin" .Values.collaboration.appAddr -}}
+{{- if $origin -}}
+{{- $items = append $items $origin -}}
+{{- end -}}
+{{- end -}}
+{{- $items = concat $items (.Values.csp.extra.frameSrc | default list) -}}
+{{- toJson (compact (uniq $items)) -}}
+{{- end -}}
+
+{{- define "opencloud.cspImgSrc" -}}
+{{- $items := list -}}
+{{- if and .Values.collaboration.enabled .Values.collaboration.appAddr -}}
+{{- $origin := include "opencloud.urlOrigin" .Values.collaboration.appAddr -}}
+{{- if $origin -}}
+{{- $items = append $items $origin -}}
+{{- end -}}
+{{- end -}}
+{{- $items = concat $items (.Values.csp.extra.imgSrc | default list) -}}
+{{- toJson (compact (uniq $items)) -}}
+{{- end -}}
+
+{{- define "opencloud.cspScriptSrc" -}}
+{{- $items := list -}}
+{{- if and .Values.oidc.external.enabled .Values.oidc.external.issuer -}}
+{{- $origin := include "opencloud.urlOrigin" .Values.oidc.external.issuer -}}
+{{- if $origin -}}
+{{- $items = append $items $origin -}}
+{{- end -}}
+{{- end -}}
+{{- $items = concat $items (.Values.csp.extra.scriptSrc | default list) -}}
+{{- toJson (compact (uniq $items)) -}}
+{{- end -}}
+
+{{- define "opencloud.needsCsp" -}}
+{{- if or (include "opencloud.cspConnectSrc" . | fromJsonArray) (include "opencloud.cspFrameSrc" . | fromJsonArray) (include "opencloud.cspImgSrc" . | fromJsonArray) (include "opencloud.cspScriptSrc" . | fromJsonArray) -}}
+true
+{{- end -}}
+{{- end -}}
+
 {{- define "opencloud.validate" -}}
 {{- if and (gt (int .Values.replicaCount) 1) (eq .Values.persistence.data.accessMode "ReadWriteOnce") -}}
 {{- fail "opencloud: replicaCount > 1 requires persistence.data.accessMode ReadWriteMany (NFS 4.2+ or CephFS)" -}}

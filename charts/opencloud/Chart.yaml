@@ -1,6 +1,6 @@
 apiVersion: v2
 name: opencloud
-version: 1.0.0
+version: 1.1.0
 description: Helm chart for OpenCloud file sync and share without S3 or enterprise dependencies
 type: application
 appVersion: "8.1.0"

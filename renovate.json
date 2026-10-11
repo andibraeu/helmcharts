@@ -32,6 +32,14 @@
       "depNameTemplate": "ghcr.io/spliit-app/spliit",
       "datasourceTemplate": "docker",
       "versioningTemplate": "semver"
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": ["/charts/opencloud/Chart\\.yaml$/"],
+      "matchStrings": ["appVersion:\\s*['\"]?(?<currentValue>[^'\"]+)['\"]?"],
+      "depNameTemplate": "opencloudeu/opencloud-rolling",
+      "datasourceTemplate": "docker",
+      "versioningTemplate": "semver"
     }
   ],
   "packageRules": [
@@ -54,6 +62,14 @@
     {
       "matchFileNames": [
         "charts/spliit/Chart.yaml"
+      ],
+      "matchUpdateTypes": ["minor", "patch"],
+      "additionalBranchPrefix": "chart-bump-",
+      "bumpVersion": "patch"
+    },
+    {
+      "matchFileNames": [
+        "charts/opencloud/Chart.yaml"
       ],
       "matchUpdateTypes": ["minor", "patch"],
       "additionalBranchPrefix": "chart-bump-",

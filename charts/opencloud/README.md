@@ -71,6 +71,8 @@ oidc:
 
 Clients are public clients with PKCE. Register the WebFinger client IDs (`web`, `OpenCloudDesktop`, `OpenCloudAndroid`, `OpenCloudIOS`) in your IdP. The IdP must return the claims OpenCloud needs even when clients do not request them as scopes.
 
+The browser must be allowed to call the IdP. OpenCloud's built-in Content-Security-Policy does not include it. When external OIDC is enabled, this chart merges the issuer origin (`scheme://host[:port]`, path stripped) into `connect-src`, `frame-src`, and `script-src`.
+
 ## Collabora / Office (external only)
 
 This chart only configures the WOPI collaboration service. Deploy Collabora (or OnlyOffice / Euro Office) elsewhere.
@@ -89,6 +91,29 @@ Requirements on the office host:
 - Browsers connect to Collabora directly (separate hostname)
 
 Rough sizing for a small Collabora CODE instance: about 2 CPU and 2 GB RAM for a few concurrent editors.
+
+The chart adds the `appAddr` origin to `frame-src` and `img-src`, so the editor iframe is allowed by the OpenCloud page policy.
+
+## Content-Security-Policy
+
+OpenCloud ships a built-in policy. This chart does not replace it. It merges extra origins through `PROXY_CSP_CONFIG_FILE_LOCATION` when an external IdP, Collabora, or `csp.extra` is set.
+
+| Source | Directives |
+| --- | --- |
+| OIDC issuer origin | `connect-src`, `frame-src`, `script-src` |
+| `collaboration.appAddr` origin | `frame-src`, `img-src` |
+| `csp.extra.*` | the matching directive |
+
+Add further origins without copying the built-in rules:
+
+```yaml
+csp:
+  extra:
+    connectSrc:
+      - https://maps.example.com
+    frameSrc:
+      - https://office.example.com:8443
+```
 
 ## Radicale (external only)
 
@@ -168,6 +193,8 @@ resources:
 | `storage.driver` | `posix` or `decomposed` | `posix` |
 | `oidc.external.enabled` | Use external IdP | `false` |
 | `collaboration.enabled` | External office WOPI | `false` |
+| `csp.extra.connectSrc` | Extra `connect-src` origins | `[]` |
+| `csp.extra.frameSrc` | Extra `frame-src` origins | `[]` |
 | `radicale.enabled` | External CalDAV/CardDAV | `false` |
 | `yjs.enabled` | Deploy Yjs relay | `false` |
 | `smtp.enabled` | Mail notifications | `false` |

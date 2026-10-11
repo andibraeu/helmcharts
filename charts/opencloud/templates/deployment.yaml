@@ -25,6 +25,9 @@ spec:
         {{- if include "opencloud.needsProxyConfig" . }}
         checksum/proxy: {{ include (print $.Template.BasePath "/proxy-configmap.yaml") . | sha256sum }}
         {{- end }}
+        {{- if include "opencloud.needsCsp" . }}
+        checksum/csp: {{ include (print $.Template.BasePath "/csp-configmap.yaml") . | sha256sum }}
+        {{- end }}
         {{- with .Values.podAnnotations }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
@@ -189,6 +192,10 @@ spec:
             - name: {{ $key }}
               value: {{ $value | quote }}
             {{- end }}
+            {{- if and (include "opencloud.needsCsp" .) (not (hasKey .Values.extraEnv "PROXY_CSP_CONFIG_FILE_LOCATION")) }}
+            - name: PROXY_CSP_CONFIG_FILE_LOCATION
+              value: /etc/opencloud-csp/csp.yaml
+            {{- end }}
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}
@@ -205,6 +212,11 @@ spec:
             - name: proxy-config
               mountPath: /etc/opencloud/proxy.yaml
               subPath: proxy.yaml
+              readOnly: true
+            {{- end }}
+            {{- if include "opencloud.needsCsp" . }}
+            - name: csp
+              mountPath: /etc/opencloud-csp
               readOnly: true
             {{- end }}
           {{- with .Values.resources }}
@@ -240,6 +252,11 @@ spec:
         - name: proxy-config
           configMap:
             name: {{ include "opencloud.fullname" . }}-proxy
+        {{- end }}
+        {{- if include "opencloud.needsCsp" . }}
+        - name: csp
+          configMap:
+            name: {{ include "opencloud.fullname" . }}-csp
         {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:

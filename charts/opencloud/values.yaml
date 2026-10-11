@@ -181,6 +181,20 @@ nodeSelector: {}
 tolerations: []
 affinity: {}
 
+# Origins merged into OpenCloud's built-in Content-Security-Policy.
+# The external OIDC issuer origin and collaboration.appAddr are added automatically.
+# Use the lists below for any further origins. Do not copy the built-in policy.
+csp:
+  extra:
+    # Browser fetches (OIDC discovery, token endpoint). Example: https://auth.example.com
+    connectSrc: []
+    # iframes (IdP, Collabora). Example: https://collabora.example.com:8443
+    frameSrc: []
+    # Images loaded from another origin.
+    imgSrc: []
+    # Scripts loaded from another origin.
+    scriptSrc: []
+
 # Extra plain environment variables.
 extraEnv: {}
 
