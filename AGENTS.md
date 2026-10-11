@@ -105,9 +105,12 @@ Releases are automated via GitHub Actions.
 
 ### Automatic Chart Version Updates
 
-For Renovate bot PRs that update `appVersion` in `charts/music-assistant-server/Chart.yaml`:
-- The workflow at `.github/workflows/update-chart-version.yaml` automatically bumps the chart version
-- This ensures chart versions are incremented when the packaged application version changes
+Renovate bumps the chart `version` in the same pull request when it updates `appVersion`. The `bumpVersions` rules in `renovate.json` apply a patch bump to:
+
+- `charts/music-assistant-server/Chart.yaml`
+- `charts/stalwart/Chart.yaml`
+- `charts/spliit/Chart.yaml`
+- `charts/opencloud/Chart.yaml`
 
 ## Testing
 

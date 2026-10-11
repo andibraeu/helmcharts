@@ -154,7 +154,7 @@ Note, however, that this may have security implications and in multi-node cluste
 This chart is configured to work with Renovate for automated updates. When a new version of Music Assistant is released:
 
 1. Renovate will automatically update the `appVersion` in `Chart.yaml`
-2. A GitHub Action will automatically increment the chart's `version` 
+2. Renovate will increment the chart's `version` in the same pull request
 3. The deployment will use the new appVersion as the default image tag when no specific tag is provided
 
 This ensures your chart always stays up-to-date with the latest Music Assistant releases. 

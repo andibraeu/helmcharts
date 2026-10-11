@@ -45,35 +45,18 @@
   "packageRules": [
     {
       "matchFileNames": [
-        "charts/music-assistant-server/Chart.yaml"
-      ],
-      "matchUpdateTypes": ["minor", "patch"],
-      "additionalBranchPrefix": "chart-bump-",
-      "bumpVersion": "patch"
-    },
-    {
-      "matchFileNames": [
-        "charts/stalwart/Chart.yaml"
-      ],
-      "matchUpdateTypes": ["minor", "patch"],
-      "additionalBranchPrefix": "chart-bump-",
-      "bumpVersion": "patch"
-    },
-    {
-      "matchFileNames": [
-        "charts/spliit/Chart.yaml"
-      ],
-      "matchUpdateTypes": ["minor", "patch"],
-      "additionalBranchPrefix": "chart-bump-",
-      "bumpVersion": "patch"
-    },
-    {
-      "matchFileNames": [
+        "charts/music-assistant-server/Chart.yaml",
+        "charts/stalwart/Chart.yaml",
+        "charts/spliit/Chart.yaml",
         "charts/opencloud/Chart.yaml"
       ],
-      "matchUpdateTypes": ["minor", "patch"],
-      "additionalBranchPrefix": "chart-bump-",
-      "bumpVersion": "patch"
+      "bumpVersions": [
+        {
+          "filePatterns": ["{{packageFileDir}}/Chart.yaml"],
+          "matchStrings": ["version:\\s+\"?(?<version>\\d+\\.\\d+\\.\\d+)\"?"],
+          "bumpType": "patch"
+        }
+      ]
     }
   ]
 }
