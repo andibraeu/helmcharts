@@ -144,6 +144,32 @@ entries:
   music-assistant-server:
   - apiVersion: v2
     appVersion: 2.10.6
+    created: "2026-10-15T06:04:40.638890114Z"
+    description: Music Assistant is a free, opensource Media library manager that
+      connects to your streaming services and a wide range of connected speakers.
+    digest: 1efb08401b6fc030aa216c1843577335657620abf554dd584c8bf7302d4deda7
+    home: https://github.com/andibraeu/helmcharts/tree/main/charts/music-assistant-server
+    icon: https://music-assistant.io/assets/transparent-logo.png
+    keywords:
+    - music-assistant
+    - music-assistant-server
+    - audio
+    - multiroom-audio
+    - home-automation
+    - smart-home
+    kubeVersion: '>=1.16.0-0'
+    maintainers:
+    - name: Andreas Bräu
+      url: https://blog.andi95.de
+    name: music-assistant-server
+    sources:
+    - https://github.com/music-assistant/server
+    type: application
+    urls:
+    - https://github.com/andibraeu/helmcharts/releases/download/music-assistant-server-2.1.5/music-assistant-server-2.1.5.tgz
+    version: 2.1.5
+  - apiVersion: v2
+    appVersion: 2.10.6
     created: "2026-10-11T12:24:40.121935303Z"
     description: Music Assistant is a free, opensource Media library manager that
       connects to your streaming services and a wide range of connected speakers.
@@ -897,6 +923,29 @@ entries:
     version: 1.0.0
   stalwart:
   - apiVersion: v2
+    appVersion: v0.16.26
+    created: "2026-10-15T06:04:40.986291716Z"
+    description: Helm chart for the Stalwart mail and collaboration server
+    digest: b4c5f04d6b518abbeaa246684a0d28bd02df4295d56d6c4c7942e80fcd4694dd
+    home: https://stalw.art
+    keywords:
+    - stalwart
+    - mail
+    - smtp
+    - imap
+    - jmap
+    kubeVersion: '>=1.16.0-0'
+    maintainers:
+    - name: Andreas Bräu
+      url: https://blog.andi95.de
+    name: stalwart
+    sources:
+    - https://github.com/stalwartlabs/stalwart
+    type: application
+    urls:
+    - https://github.com/andibraeu/helmcharts/releases/download/stalwart-1.0.5/stalwart-1.0.5.tgz
+    version: 1.0.5
+  - apiVersion: v2
     appVersion: v0.16.25
     created: "2026-10-11T12:09:17.701880995Z"
     description: Helm chart for the Stalwart mail and collaboration server
@@ -1011,4 +1060,4 @@ entries:
     urls:
     - https://github.com/andibraeu/helmcharts/releases/download/stalwart-1.0.0/stalwart-1.0.0.tgz
     version: 1.0.0
-generated: "2026-10-11T12:24:54.73857184Z"
+generated: "2026-10-15T06:04:40.986493895Z"
