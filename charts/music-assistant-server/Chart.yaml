@@ -5,7 +5,7 @@ description: Music Assistant is a free, opensource Media library manager that co
 type: application
 appVersion: "2.10.7"
 kubeVersion: ">=1.16.0-0"
-icon: https://music-assistant.io/assets/transparent-logo.png
+icon: https://music-assistant.io/assets/icon.png
 home: https://github.com/andibraeu/helmcharts/tree/main/charts/music-assistant-server
 keywords:
   - music-assistant
