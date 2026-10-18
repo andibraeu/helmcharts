@@ -44,6 +44,10 @@
   ],
   "packageRules": [
     {
+      "matchFileNames": ["charts/ohcloud/**"],
+      "enabled": false
+    },
+    {
       "matchFileNames": [
         "charts/music-assistant-server/Chart.yaml",
         "charts/stalwart/Chart.yaml",

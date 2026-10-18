@@ -1,5 +1,7 @@
 [![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/andibraeu)](https://artifacthub.io/packages/search?repo=andibraeu) [![Latest Release](https://img.shields.io/github/v/release/andibraeu/helmcharts)]()  
 
+> **Deprecated:** This chart is no longer maintained. There will be no further releases. Existing installations keep working.
+
 # openhabcloud-helmchart
 
 ## How to use:

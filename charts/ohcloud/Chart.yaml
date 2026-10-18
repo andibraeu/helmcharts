@@ -1,7 +1,8 @@
 apiVersion: v2
 name: openhab-cloud
-description: A Helm chart for OpenHAB Cloud
+description: "DEPRECATED: A Helm chart for OpenHAB Cloud"
 type: application
+deprecated: true
 dependencies:
     - name: redis
       version: 28.3.1
@@ -12,5 +13,5 @@ dependencies:
       repository: oci://registry-1.docker.io/bitnamicharts
       condition: mongodb.enabled
       
-version: 1.2.6
+version: 1.2.7
 appVersion: "a8138a3"
