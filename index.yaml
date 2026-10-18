@@ -143,6 +143,32 @@ entries:
     version: 0.5.0
   music-assistant-server:
   - apiVersion: v2
+    appVersion: 2.10.7
+    created: "2026-10-18T14:18:35.269690626Z"
+    description: Music Assistant is a free, opensource Media library manager that
+      connects to your streaming services and a wide range of connected speakers.
+    digest: a711f2ea0b221be94fd21a4b6f40cf80c6e71d9420209a0d8c1c66a3b2bbba54
+    home: https://github.com/andibraeu/helmcharts/tree/main/charts/music-assistant-server
+    icon: https://music-assistant.io/assets/icon.png
+    keywords:
+    - music-assistant
+    - music-assistant-server
+    - audio
+    - multiroom-audio
+    - home-automation
+    - smart-home
+    kubeVersion: '>=1.16.0-0'
+    maintainers:
+    - name: Andreas Bräu
+      url: https://blog.andi95.de
+    name: music-assistant-server
+    sources:
+    - https://github.com/music-assistant/server
+    type: application
+    urls:
+    - https://github.com/andibraeu/helmcharts/releases/download/music-assistant-server-2.1.7/music-assistant-server-2.1.7.tgz
+    version: 2.1.7
+  - apiVersion: v2
     appVersion: 2.10.6
     created: "2026-10-15T06:04:40.638890114Z"
     description: Music Assistant is a free, opensource Media library manager that
@@ -613,6 +639,29 @@ entries:
   opencloud:
   - apiVersion: v2
     appVersion: 8.1.0
+    created: "2026-10-18T14:18:35.477377602Z"
+    description: Helm chart for OpenCloud file sync and share without S3 or enterprise
+      dependencies
+    digest: a03effbaf1c56ff09bafaea8f0a8d92701e89cd9c49698bc9f15e2e4c7471bd8
+    home: https://github.com/andibraeu/helmcharts/tree/main/charts/opencloud
+    keywords:
+    - opencloud
+    - file-sync
+    - file-share
+    - oidc
+    kubeVersion: '>=1.16.0-0'
+    maintainers:
+    - name: Andreas Bräu
+      url: https://blog.andi95.de
+    name: opencloud
+    sources:
+    - https://github.com/opencloud-eu/opencloud
+    type: application
+    urls:
+    - https://github.com/andibraeu/helmcharts/releases/download/opencloud-1.1.1/opencloud-1.1.1.tgz
+    version: 1.1.1
+  - apiVersion: v2
+    appVersion: 8.1.0
     created: "2026-10-11T12:04:18.478616885Z"
     description: Helm chart for OpenCloud file sync and share without S3 or enterprise
       dependencies
@@ -871,6 +920,30 @@ entries:
   spliit:
   - apiVersion: v2
     appVersion: 1.30.0
+    created: "2026-10-18T14:18:35.595850132Z"
+    description: Spliit is a free and open source Splitwise alternative for sharing
+      expenses with friends and family.
+    digest: 125a81bb0bf1a09058583ca3f1362646e1453a5f5a4a67fdad36f683cf4ac4f0
+    home: https://github.com/andibraeu/helmcharts/tree/main/charts/spliit
+    icon: https://raw.githubusercontent.com/spliit-app/spliit/main/public/logo-with-text.png
+    keywords:
+    - spliit
+    - expenses
+    - splitwise
+    - finance
+    kubeVersion: '>=1.16.0-0'
+    maintainers:
+    - name: Andreas Bräu
+      url: https://blog.andi95.de
+    name: spliit
+    sources:
+    - https://github.com/spliit-app/spliit
+    type: application
+    urls:
+    - https://github.com/andibraeu/helmcharts/releases/download/spliit-1.0.3/spliit-1.0.3.tgz
+    version: 1.0.3
+  - apiVersion: v2
+    appVersion: 1.30.0
     created: "2026-10-11T12:24:54.738510648Z"
     description: Spliit is a free and open source Splitwise alternative for sharing
       expenses with friends and family.
@@ -942,6 +1015,29 @@ entries:
     - https://github.com/andibraeu/helmcharts/releases/download/spliit-1.0.0/spliit-1.0.0.tgz
     version: 1.0.0
   stalwart:
+  - apiVersion: v2
+    appVersion: v0.16.26
+    created: "2026-10-18T14:18:35.76334195Z"
+    description: Helm chart for the Stalwart mail and collaboration server
+    digest: b968b38de8961982ff681e29001f41d28f5ed806fa6b86d44c006064db9393e4
+    home: https://stalw.art
+    keywords:
+    - stalwart
+    - mail
+    - smtp
+    - imap
+    - jmap
+    kubeVersion: '>=1.16.0-0'
+    maintainers:
+    - name: Andreas Bräu
+      url: https://blog.andi95.de
+    name: stalwart
+    sources:
+    - https://github.com/stalwartlabs/stalwart
+    type: application
+    urls:
+    - https://github.com/andibraeu/helmcharts/releases/download/stalwart-1.0.6/stalwart-1.0.6.tgz
+    version: 1.0.6
   - apiVersion: v2
     appVersion: v0.16.26
     created: "2026-10-15T06:04:40.986291716Z"
@@ -1080,4 +1176,4 @@ entries:
     urls:
     - https://github.com/andibraeu/helmcharts/releases/download/stalwart-1.0.0/stalwart-1.0.0.tgz
     version: 1.0.0
-generated: "2026-10-18T14:14:16.398000634Z"
+generated: "2026-10-18T14:18:35.763567792Z"
