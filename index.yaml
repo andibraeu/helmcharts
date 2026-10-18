@@ -660,6 +660,26 @@ entries:
   openhab-cloud:
   - apiVersion: v2
     appVersion: a8138a3
+    created: "2026-10-18T14:14:16.397901432Z"
+    dependencies:
+    - condition: redis.enabled
+      name: redis
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 28.3.1
+    - condition: mongodb.enabled
+      name: mongodb
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 15.1.x
+    deprecated: true
+    description: 'DEPRECATED: A Helm chart for OpenHAB Cloud'
+    digest: ebb0f9792c19196289c43e59a0d267f6ce8ed811cdbc8d62d53f54c438567e9d
+    name: openhab-cloud
+    type: application
+    urls:
+    - https://github.com/andibraeu/helmcharts/releases/download/openhab-cloud-1.2.7/openhab-cloud-1.2.7.tgz
+    version: 1.2.7
+  - apiVersion: v2
+    appVersion: a8138a3
     created: "2026-07-12T17:02:55.166963037Z"
     dependencies:
     - condition: redis.enabled
@@ -1060,4 +1080,4 @@ entries:
     urls:
     - https://github.com/andibraeu/helmcharts/releases/download/stalwart-1.0.0/stalwart-1.0.0.tgz
     version: 1.0.0
-generated: "2026-10-15T06:04:40.986493895Z"
+generated: "2026-10-18T14:14:16.398000634Z"
