@@ -730,6 +730,29 @@ entries:
     version: 1.0.0
   opencloud:
   - apiVersion: v2
+    appVersion: 9.2.0
+    created: "2026-11-19T23:01:21.186596051Z"
+    description: Helm chart for OpenCloud file sync and share without S3 or enterprise
+      dependencies
+    digest: 6f4ba7cb7bdf81b7b7b7b9808e4cfa82bff07fc28b5096782f5c6f85a554c6b1
+    home: https://github.com/andibraeu/helmcharts/tree/main/charts/opencloud
+    keywords:
+    - opencloud
+    - file-sync
+    - file-share
+    - oidc
+    kubeVersion: '>=1.16.0-0'
+    maintainers:
+    - name: Andreas Bräu
+      url: https://blog.andi95.de
+    name: opencloud
+    sources:
+    - https://github.com/opencloud-eu/opencloud
+    type: application
+    urls:
+    - https://github.com/andibraeu/helmcharts/releases/download/opencloud-1.1.3/opencloud-1.1.3.tgz
+    version: 1.1.3
+  - apiVersion: v2
     appVersion: 9.0.0
     created: "2026-11-06T07:21:23.175834598Z"
     description: Helm chart for OpenCloud file sync and share without S3 or enterprise
@@ -1314,4 +1337,4 @@ entries:
     urls:
     - https://github.com/andibraeu/helmcharts/releases/download/stalwart-1.0.0/stalwart-1.0.0.tgz
     version: 1.0.0
-generated: "2026-11-19T23:00:00.266561655Z"
+generated: "2026-11-19T23:01:21.186712604Z"
