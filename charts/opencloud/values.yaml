@@ -128,7 +128,7 @@ yjs:
   enabled: false
   image:
     repository: opencloudeu/yjs
-    tag: "1.1.0"
+    tag: "1.1.1"
     pullPolicy: IfNotPresent
   # Leave empty to use the chart OpenCloud service URL.
   opencloudUrl: ""
