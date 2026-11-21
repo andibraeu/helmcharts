@@ -103,6 +103,15 @@ Releases are automated via GitHub Actions.
 2. Create GitHub releases
 3. Update the Helm repository index
 
+### Release Notes
+
+The chart-releaser configuration (`cr.yaml`) sets `release-notes-file: RELEASE-NOTES.md`.
+If a chart contains `charts/<chart-name>/RELEASE-NOTES.md`, its content becomes the
+GitHub release body, followed by the generated notes. Use it to announce breaking
+changes. The file is used for every following release of that chart, so phrase it
+so it stays valid (e.g. "Upgrading from 1.x") and replace it with the next major version.
+Charts without the file use the Chart.yaml `description`.
+
 ### Automatic Chart Version Updates
 
 Renovate bumps the chart `version` in the same pull request when it updates `appVersion`. The `bumpVersions` rules in `renovate.json` apply a patch bump to:

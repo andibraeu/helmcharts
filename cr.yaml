@@ -1,0 +1,5 @@
+# chart-releaser configuration.
+# If a chart contains RELEASE-NOTES.md, its content is used as the GitHub
+# release body (prepended to the generated notes). Charts without the file
+# fall back to the Chart.yaml description.
+release-notes-file: RELEASE-NOTES.md
